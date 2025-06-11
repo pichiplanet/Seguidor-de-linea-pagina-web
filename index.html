@@ -472,16 +472,16 @@ analogWrite(enB, velDer);
     <div class="caption">7 palabras... ESENCIA</div>
   </div>
 
-  <script>
-    const body = document.body;
-    const cubes = document.querySelectorAll('.dou-cube-container');
-    const esenciaOverlay = document.getElementById('esencia-overlay');
+<script>
+const body = document.body;
+const cubes = document.querySelectorAll('.dou-cube-container');
+const esenciaOverlay = document.getElementById('esencia-overlay');
 
-    let typed = '';
-    let douMode = false;
-    let originalTexts = [];
+let typed = '';
+let douMode = false;
+let originalTexts = [];
 
- function toggleDouMode() {
+function toggleDouMode() {
   document.body.classList.toggle('dou-mode');
   douMode = !douMode;
 
@@ -494,8 +494,6 @@ analogWrite(enB, velDer);
   document.querySelectorAll('.solo-dou').forEach(el => {
     el.style.display = douMode ? 'block' : 'none';
   });
-  const gif = document.getElementById('psp-gif');
-  if (gif) gif.style.display = douMode ? 'block' : 'none';
 
   if (douMode) {
     // Save and replace all visible text
@@ -506,43 +504,27 @@ analogWrite(enB, velDer);
         el.innerText = 'dou';
       }
     });
-    else {
+  } else {
     // Restore all original text
     originalTexts.forEach(item => {
       item.element.innerText = item.text;
     });
   }
+}
 
-      // Mostrar el PSP
-      const gif = document.getElementById('psp-gif');
-      if (gif) gif.style.display = 'block';
+function showEsencia() {
+  esenciaOverlay.classList.add('active');
+  esenciaOverlay.setAttribute('aria-hidden', 'false');
+  body.classList.add('esencia-active');
+}
 
-     else {
-      // Restaurar los textos
-      originalTexts.forEach(item => {
-        item.element.innerText = item.text;
-      });
+function hideEsencia() {
+  esenciaOverlay.classList.remove('active');
+  esenciaOverlay.setAttribute('aria-hidden', 'true');
+  body.classList.remove('esencia-active');
+}
 
-      // Ocultar el PSP
-      const gif = document.getElementById('psp-gif');
-      if (gif) gif.style.display = 'none';
-    }
-  
-
-
-    function showEsencia() {
-      esenciaOverlay.classList.add('active');
-      esenciaOverlay.setAttribute('aria-hidden', 'false');
-      body.classList.add('esencia-active');
-    }
-
-    function hideEsencia() {
-      esenciaOverlay.classList.remove('active');
-      esenciaOverlay.setAttribute('aria-hidden', 'true');
-      body.classList.remove('esencia-active');
-    }
-
-  document.addEventListener('keydown', (e) => {
+document.addEventListener('keydown', (e) => {
   // If the "esencia" overlay is active, allow ESC to close it
   if (esenciaOverlay.classList.contains('active')) {
     if (e.key === 'Escape') {
@@ -575,9 +557,9 @@ analogWrite(enB, velDer);
   }
 });
 
-    // Cerrar overlay si haces click en él
-    esenciaOverlay.addEventListener('click', hideEsencia);
-  </script>
-
+// Cerrar overlay si haces click en él
+esenciaOverlay.addEventListener('click', hideEsencia);
+</script>
+    
 </body>
 </html>

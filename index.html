@@ -482,6 +482,7 @@ analogWrite(enB, velDer);
 </div>
 <!-- Audio element -->
 <audio id="lobotomy-audio" src="lobotomy-sound-effect.mp3"></audio>
+<audio id="knee-audio" src="knee-hurts.mp3" loop></audio>
 
     
   <!-- Overlay ESENCIA -->
@@ -607,10 +608,23 @@ document.querySelector('.dou-cube-container').addEventListener('click', () => {
       abbeyOverlay.style.display = "none";
       abbeyOverlay.classList.remove('fading');
       bartOverlay.style.display = "flex";
+      const kneeAudio = document.getElementById('knee-audio');
+// ... inside the setTimeout after Abbey fade:
+abbeyOverlay.style.display = "none";
+abbeyOverlay.classList.remove('fading');
+bartOverlay.style.display = "flex";
+// Stop lobotomy sound
+lobotomyAudio.pause();
+lobotomyAudio.currentTime = 0;
+// Play knee-hurts sound once
+kneeAudio.currentTime = 0;
+kneeAudio.play();
     }, 1200);
   }, 2500);
 });
 
+
+      
 // Hide Bart overlay when user types "bart"
 document.addEventListener('keydown', function(e) {
   if (bartOverlay.style.display === "flex") {

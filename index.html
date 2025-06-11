@@ -481,41 +481,45 @@ analogWrite(enB, velDer);
     let douMode = false;
     let originalTexts = [];
 
-  function toggleDouMode() {
-    document.body.classList.toggle('dou-mode');
-    douMode = !douMode;
+ function toggleDouMode() {
+  document.body.classList.toggle('dou-mode');
+  douMode = !douMode;
 
-    if (douMode) {
-      // Guardar todos los textos visibles
-      originalTexts = [];
-     document.querySelectorAll('h1, h2, h3, p, span, li, button, td, th').forEach(el => {
-  // Evitar modificar elementos con hijos IMG u otros
-  if (!el.querySelector('img')) {
-    originalTexts.push({ element: el, text: el.innerText });
-    el.innerText = 'dou';
-  }
-  document.body.classList.toggle('dou-mode', douMode);
-
-  // Mostrar u ocultar los cubos
+  // Show or hide the cubes based on douMode
   document.querySelectorAll('.dou-cube-container').forEach(cube => {
     cube.style.display = douMode ? 'block' : 'none';
   });
 
-  // Mostrar u ocultar cosas solo del modo dou
+  // Show or hide PSP GIF and solo-dou elements
   document.querySelectorAll('.solo-dou').forEach(el => {
     el.style.display = douMode ? 'block' : 'none';
   });
-
   const gif = document.getElementById('psp-gif');
   if (gif) gif.style.display = douMode ? 'block' : 'none';
-});
+
+  if (douMode) {
+    // Save and replace all visible text
+    originalTexts = [];
+    document.querySelectorAll('h1, h2, h3, p, span, li, button, td, th').forEach(el => {
+      if (!el.querySelector('img')) {
+        originalTexts.push({ element: el, text: el.innerText });
+        el.innerText = 'dou';
+      }
+    });
+  } else {
+    // Restore all original text
+    originalTexts.forEach(item => {
+      item.element.innerText = item.text;
+    });
+  }
+}
 
 
       // Mostrar el PSP
       const gif = document.getElementById('psp-gif');
       if (gif) gif.style.display = 'block';
 
-    } else {
+     else {
       // Restaurar los textos
       originalTexts.forEach(item => {
         item.element.innerText = item.text;
@@ -525,7 +529,7 @@ analogWrite(enB, velDer);
       const gif = document.getElementById('psp-gif');
       if (gif) gif.style.display = 'none';
     }
-  }
+  
 
 
     function showEsencia() {

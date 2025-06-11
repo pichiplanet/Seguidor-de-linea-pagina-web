@@ -506,14 +506,12 @@ analogWrite(enB, velDer);
         el.innerText = 'dou';
       }
     });
-  } else {
+    else {
     // Restore all original text
     originalTexts.forEach(item => {
       item.element.innerText = item.text;
     });
   }
-}
-
 
       // Mostrar el PSP
       const gif = document.getElementById('psp-gif');

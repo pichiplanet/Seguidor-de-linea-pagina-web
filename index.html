@@ -17,6 +17,15 @@
       overflow-x: hidden;
     }
 
+    @keyframes fadeOutOverlay {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+#abbey-overlay.fading {
+  animation: fadeOutOverlay 1.2s forwards;
+}
+
+    
     nav {
       background: #1e1e2f;
       padding: 10px 0;
@@ -462,6 +471,19 @@ analogWrite(enB, velDer);
     </a>
   </footer>
 
+  <!-- Abbey Road Overlay -->
+<div id="abbey-overlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.8); justify-content:center; align-items:center; z-index:10000;">
+  <img id="abbey-img" src="https://upload.wikimedia.org/wikipedia/en/4/42/Beatles_-_Abbey_Road.jpg" style="max-width:80vw; max-height:80vh; border-radius:14px; box-shadow:0 0 32px #fff;" />
+</div>
+<!-- Bart Overlay -->
+<div id="bart-overlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.8); justify-content:center; align-items:center; z-index:11000;">
+  <img src="https://upload.wikimedia.org/wikipedia/en/a/aa/Bart_Simpson_200px.png" style="max-width:40vw; max-height:80vh;"/>
+  <div style="position:absolute; bottom:10vh; left:0; width:100%; text-align:center; color:#fff; font-size:2.2rem; text-shadow:0 0 8px #000;">Escribe "bart" para continuar</div>
+</div>
+<!-- Audio element -->
+<audio id="lobotomy-audio" src="lobotomy-sound-effect.mp3"></audio>
+
+    
   <!-- Overlay ESENCIA -->
   <div id="esencia-overlay" role="dialog" aria-modal="true" aria-hidden="true">
     <img src="https://i.imgur.com/Ut9Th5S.png" alt="Tablos" />
@@ -555,5 +577,57 @@ analogWrite(enB, velDer);
     // Cerrar overlay si haces click en él
     esenciaOverlay.addEventListener('click', hideEsencia);
   </script>
+    <script>
+const abbeyOverlay = document.getElementById('abbey-overlay');
+const abbeyImg = document.getElementById('abbey-img');
+const lobotomyAudio = document.getElementById('lobotomy-audio');
+const bartOverlay = document.getElementById('bart-overlay');
+
+let bartTyped = "";
+
+// Pitch up the audio
+function playLobotomy() {
+  lobotomyAudio.currentTime = 0;
+  lobotomyAudio.playbackRate = 1.4; // Pitch up
+  lobotomyAudio.play();
+}
+
+// Homer Cube click
+document.querySelector('.dou-cube-container').addEventListener('click', () => {
+  // Show Abbey overlay
+  abbeyOverlay.style.display = "flex";
+  abbeyOverlay.style.opacity = "1";
+  playLobotomy();
+
+  // After 2.5s: fade out Abbey, show Bart overlay
+  setTimeout(() => {
+    abbeyOverlay.classList.add('fading');
+    // After fade (1.2s), hide Abbey and show Bart
+    setTimeout(() => {
+      abbeyOverlay.style.display = "none";
+      abbeyOverlay.classList.remove('fading');
+      bartOverlay.style.display = "flex";
+    }, 1200);
+  }, 2500);
+});
+
+// Hide Bart overlay when user types "bart"
+document.addEventListener('keydown', function(e) {
+  if (bartOverlay.style.display === "flex") {
+    if (e.key.length === 1) {
+      bartTyped += e.key.toLowerCase();
+      if (bartTyped.endsWith("bart")) {
+        bartOverlay.style.display = "none";
+        bartTyped = "";
+      }
+      // prevent page scroll etc.
+      e.preventDefault();
+    } else if (e.key === 'Backspace') {
+      bartTyped = bartTyped.slice(0, -1);
+      e.preventDefault();
+    }
+  }
+});
+</script>
 </body>
 </html>

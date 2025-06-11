@@ -61,6 +61,20 @@
       transition: filter 0.3s ease;
     }
 
+    @keyframes violent-bounce-y {
+  0%   { transform: translateY(0); }
+  10%  { transform: translateY(-40px); }
+  20%  { transform: translateY(0); }
+  30%  { transform: translateY(-30px);}
+  40%  { transform: translateY(0);}
+  50%  { transform: translateY(-50px);}
+  60%  { transform: translateY(0);}
+  70%  { transform: translateY(-40px);}
+  80%  { transform: translateY(0);}
+  90%  { transform: translateY(-30px);}
+  100% { transform: translateY(0);}
+}
+    
     section {
       background-color: #ffffff;
       margin-bottom: 20px;
@@ -159,6 +173,7 @@
       position: relative;
       transform-style: preserve-3d;
       animation: rotateCube 200ms infinite linear;
+      animation: violent-bounce-y 0.8s infinite cubic-bezier(.23,1.22,.61,.94);
     }
     .face {
       position: absolute;

@@ -587,13 +587,16 @@ const kneeAudio = document.getElementById('knee-audio');
 
 let bartTyped = "";
 
-// Pitch up the audio
 function playLobotomy() {
-  lobotomyAudio.playbackRate = 1.4; // Pitch up
+  lobotomyAudio.pause();
   lobotomyAudio.currentTime = 0;
+  lobotomyAudio.playbackRate = 1.4; // chipmunk speed & pitch
+  lobotomyAudio.preservesPitch = false;
+  lobotomyAudio.mozPreservesPitch = false;
+  lobotomyAudio.webkitPreservesPitch = false;
   lobotomyAudio.play();
 }
-
+     
 // Homer Cube click
 document.querySelector('.dou-cube-container').addEventListener('click', () => {
   // Show Abbey overlay

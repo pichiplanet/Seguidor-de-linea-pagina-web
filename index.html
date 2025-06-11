@@ -542,31 +542,38 @@ analogWrite(enB, velDer);
       body.classList.remove('esencia-active');
     }
 
-    document.addEventListener('keydown', (e) => {
-      if (esenciaOverlay.classList.contains('active')) {
-        // Si overlay activo, cualquier tecla ESC o clic fuera oculta el overlay
-        if (e.key === 'Escape') {
-          hideEsencia();
-          typed = '';
-          return;
-        }
-      }
+document.addEventListener('keydown', (e) => {
+  // Handle closing the "esencia" overlay
+  if (esenciaOverlay.classList.contains('active')) {
+    // If overlay is active, any ESC key hides it and clears typed buffer
+    if (e.key === 'Escape') {
+      hideEsencia();
+      typed = '';
+      return;
+    }
+  }
 
-      if (e.key.length === 1) {
-        typed += e.key.toLowerCase();
-      } else if (e.key === 'Enter') {
-        const trimmedTyped = typed.trim().toLowerCase();
+  if (e.key.length === 1) {
+    typed += e.key.toLowerCase();
+  } else if (e.key === 'Enter') {
+    const trimmedTyped = typed.trim().toLowerCase();
 
-        if (trimmedTyped === 'dou') {
-          toggleDouMode();
-        } else if (trimmedTyped === 'esencia') {
-          showEsencia();
-        }
-        typed = '';
-      } else if (e.key === 'Backspace') {
-        typed = typed.slice(0, -1);
-      }
-    });
+    if (trimmedTyped === 'dou') {
+      e.preventDefault(); // Prevent link/button activation on Enter
+      toggleDouMode();
+      typed = '';
+      return;
+    } else if (trimmedTyped === 'esencia') {
+      e.preventDefault();
+      showEsencia();
+      typed = '';
+      return;
+    }
+    typed = '';
+  } else if (e.key === 'Backspace') {
+    typed = typed.slice(0, -1);
+  }
+});
 
     // Cerrar overlay si haces click en él
     esenciaOverlay.addEventListener('click', hideEsencia);

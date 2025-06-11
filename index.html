@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Curso: Robot Seguidor de Línea</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f8;
+      margin: 0;
+      padding: 0;
+      transition: all 0.3s ease;
+      color: #000;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    header {
+      background-color: #1e1e2f;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    main {
+      padding: 20px;
+      position: relative;
+      z-index: 2;
+      transition: filter 0.3s ease;
+    }
+
+    section {
+      background-color: #ffffff;
+      margin-bottom: 20px;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 2;
+    }
+
+    h2, h3 {
+      color: #333;
+    }
+
+    pre {
+      background-color: #eee;
+      padding: 10px;
+      border-radius: 4px;
+      overflow-x: auto;
+      font-family: monospace;
+    }
+
+    footer {
+      background-color: #1e1e2f;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      position: relative;
+      z-index: 2;
+    }
+
+    footer a.solo-dou {
+      display: none;
+    }
+
+    body.dou-mode footer a.solo-dou {
+      display: inline-block;
+    }
+
+
+    /* Modo Dou */
+
+    body.dou-mode {
+      background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');
+      background-repeat: repeat;
+      background-size: 150px;
+      color: #000;
+    }
+
+    body.dou-mode header {
+      background-color: rgba(255, 255, 255, 0.85);
+      color: #000;
+    }
+
+    body.dou-mode section {
+      background-color: rgba(255, 255, 255, 0.95);
+      border: 2px dashed #f44336;
+    }
+
+    body.dou-mode h2, body.dou-mode h3 {
+      color: #d32f2f;
+    }
+
+    /* Cubo Homero */
+
+    .dou-cube-container {
+      perspective: 800px;
+      width: 150px;
+      height: 150px;
+      margin: 20px auto 10px auto;
+      position: relative;
+      z-index: 5; /* arriba de secciones */
+      display: none;
+    }
+
+    .dou-cube {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      animation: rotateCube 10s infinite linear;
+    }
+
+    .face {
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      background-size: cover;
+      background-position: center;
+      opacity: 0.95;
+      border: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .front  { transform: rotateY(  0deg) translateZ(75px); }
+    .back   { transform: rotateY(180deg) translateZ(75px); }
+    .right  { transform: rotateY( 90deg) translateZ(75px); }
+    .left   { transform: rotateY(-90deg) translateZ(75px); }
+    .top    { transform: rotateX( 90deg) translateZ(75px); }
+    .bottom { transform: rotateX(-90deg) translateZ(75px); }
+
+    @keyframes rotateCube {
+      0%   { transform: rotateX(0deg) rotateY(0deg); }
+      100% { transform: rotateX(360deg) rotateY(360deg); }
+    }
+
+    /* Pantalla completa para ESENCIA */
+
+    #esencia-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.8);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    #esencia-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    #esencia-overlay img {
+      max-width: 90vw;
+      max-height: 80vh;
+      object-fit: contain;
+      border-radius: 10px;
+      box-shadow: 0 0 30px rgba(255,255,255,0.7);
+      margin-bottom: 20px;
+    }
+
+    #esencia-overlay .caption {
+      color: white;
+      font-size: 2.5rem;
+      font-weight: bold;
+      font-family: 'Arial Black', Arial, sans-serif;
+      text-shadow: 0 0 8px #000;
+      user-select: none;
+    }
+
+    /* Cuando overlay está activo, se oscurece el contenido de fondo */
+    body.esencia-active main,
+    body.esencia-active header,
+    body.esencia-active footer {
+      filter: blur(4px) brightness(0.5);
+      pointer-events: none;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🤖 Curso: Robot Seguidor de Línea</h1>
+    <p>Construcción y programación desde cero</p>
+  </header>
+
+  <main>
+    <!-- Cubo arriba de cada sección -->
+    <div class="dou-cube-container">
+      <div class="dou-cube">
+        <div class="face front" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+        <div class="face back" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+        <div class="face right" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+        <div class="face left" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+        <div class="face top" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+        <div class="face bottom" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+      </div>
+    </div>
+
+    <section>
+      <h2>🧠 Objetivo</h2>
+      <p>Que los estudiantes entiendan cómo construir y programar un robot seguidor de línea desde cero, combinando electrónica, mecánica y programación.</p>
+    </section>
+
+    <div class="dou-cube-container">
+      <div class="dou-cube">
+        <div class="face front" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+        <div class="face back" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+        <div class="face right" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+        <div class="face left" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+        <div class="face top" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+        <div class="face bottom" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+      </div>
+    </div>
+
+    <section>
+      <h2>📚 CLASE 1: Introducción al proyecto y componentes</h2>
+      <ul>
+        <li>¿Qué es un seguidor de línea?</li>
+        <li>Tipos de sensores IR (reflectivos)</li>
+        <li>Motor DC, puente H, ruedas</li>
+        <li>Microcontrolador (Arduino UNO, ESP32, etc.)</li>
+      </ul>
+    </section>
+
+    <div class="dou-cube-container">
+      <div class="dou-cube">
+        <div class="face front" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+        <div class="face back" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+        <div class="face right" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+        <div class="face left" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+        <div class="face top" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+        <div class="face bottom" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+      </div>
+    </div>
+
+    <section>
+      <h2>🔌 CLASE 2: Montaje del hardware</h2>
+      <pre>
+Sensor Izq → A0  
+Sensor Der → A1  
+Motor Izq → IN1 e IN2 (L298N) → D3 y D4  
+Motor Der → IN3 e IN4 (L298N) → D5 y D6  
+Enable → D9 y D10 (PWM)
+      </pre>
+    </section>
+
+    <div class="dou-cube-container">
+      <div class="dou-cube">
+        <div class="face front" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+        <div class="face back" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+        <div class="face right" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+        <div class="face left" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+        <div class="face top" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+        <div class="face bottom" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+      </div>
+    </div>
+
+    <section>
+      <h2>💻 CLASE 3: Programación básica</h2>
+      <pre>
+void setup() {
+  pinMode(A0, INPUT);
+  pinMode(A1, INPUT);
+  pinMode(3, OUTPUT);
+  pinMode(4, OUTPUT);
+  pinMode(5, OUTPUT);
+  pinMode(6, OUTPUT);
+}
+
+void loop() {
+  int sensorIzq = analogRead(A0);
+  int sensorDer = analogRead(A1);
+
+  if(sensorIzq < threshold) {
+    // Gira a la derecha
+  } else if(sensorDer < threshold) {
+    // Gira a la izquierda
+  } else {
+    // Avanza recto
+  }
+}
+      </pre>
+    </section>
+
+    <section>
+  <h2>⚙️ CLASE 4: Control básico de motores</h2>
+  <h3>Temas:</h3>
+  <ul>
+    <li>Control de velocidad con PWM</li>
+    <li>Funciones para mover hacia adelante, girar izquierda/derecha, detenerse</li>
+  </ul>
+
+  <h3>Ejemplo:</h3>
+  <pre><code class="language-cpp">
+void moverAdelante() {
+  digitalWrite(IN1, HIGH); digitalWrite(IN2, LOW);
+  digitalWrite(IN3, HIGH); digitalWrite(IN4, LOW);
+}
+  </code></pre>
+
+  <h3>Actividad:</h3>
+  <p>Crear funciones reutilizables para controlar movimientos del robot.</p>
+</section>
+
+<div class="dou-cube-container">
+  <div class="dou-cube">
+    <div class="face front" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+    <div class="face back" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+    <div class="face right" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+    <div class="face left" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+    <div class="face top" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+    <div class="face bottom" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+  </div>
+</div>
+
+<section>
+  <h2>🤖 CLASE 5: Algoritmo básico de seguimiento</h2>
+  <h3>Temas:</h3>
+  <ul>
+    <li>Lógica de decisión simple:</li>
+    <ul>
+      <li>Si ambos sensores ven negro → avanzar</li>
+      <li>Si sensor izquierdo ve negro → girar izquierda</li>
+      <li>Si sensor derecho ve negro → girar derecha</li>
+      <li>Si ambos ven blanco → detener</li>
+    </ul>
+  </ul>
+
+  <h3>Pseudocódigo:</h3>
+  <pre><code>
+si (izq == negro y der == negro) → avanzar  
+si (izq == negro y der == blanco) → girar izquierda  
+si (izq == blanco y der == negro) → girar derecha  
+si (ambos blancos) → detener
+  </code></pre>
+
+  <h3>Actividad:</h3>
+  <p>Implementar el algoritmo básico y probar en una pista sencilla.</p>
+</section>
+
+<div class="dou-cube-container">
+  <div class="dou-cube">
+    <div class="face front" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+    <div class="face back" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+    <div class="face right" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+    <div class="face left" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+    <div class="face top" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+    <div class="face bottom" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+  </div>
+</div>
+
+<section>
+  <h2>🛠️ CLASE 6: Mejora del control – Proporcional (PID opcional)</h2>
+  <h3>Temas:</h3>
+  <ul>
+    <li>Concepto de control proporcional</li>
+    <li>Usar diferencia entre sensores para ajustar velocidad suavemente</li>
+    <li>Suavizado del movimiento</li>
+  </ul>
+
+  <h3>Código ejemplo:</h3>
+  <pre><code class="language-cpp">
+int error = valIzq - valDer;
+int velIzq = baseSpeed - error;
+int velDer = baseSpeed + error;
+
+analogWrite(enA, velIzq);
+analogWrite(enB, velDer);
+  </code></pre>
+
+  <h3>Actividad:</h3>
+  <p>Probar diferentes valores de corrección y mejorar el comportamiento en curvas cerradas.</p>
+</section>
+
+<div class="dou-cube-container">
+  <div class="dou-cube">
+    <div class="face front" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+    <div class="face back" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+    <div class="face right" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+    <div class="face left" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+    <div class="face top" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+    <div class="face bottom" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+  </div>
+</div>
+
+<section>
+  <h2>🏁 CLASE 7: Práctica final y desafío</h2>
+  <h3>Temas:</h3>
+  <ul>
+    <li>Repaso general</li>
+    <li>Calibración final</li>
+    <li>Diseño de pista de prueba</li>
+  </ul>
+
+  <h3>Actividad:</h3>
+  <p>Organizar una competencia donde los robots sigan una línea completa sin salirse.</p>
+
+  <h3>Opcional:</h3>
+  <ul>
+    <li>Detectar cruces</li>
+    <li>Contar líneas transversales</li>
+    <li>Usar más sensores para mayor precisión</li>
+  </ul>
+</section>
+
+<div class="dou-cube-container">
+  <div class="dou-cube">
+    <div class="face front" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+    <div class="face back" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+    <div class="face right" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+    <div class="face left" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+    <div class="face top" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+    <div class="face bottom" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+  </div>
+</div>
+
+<section>
+  <h2>📎 Recursos recomendados</h2>
+  <ul>
+    <li>Arduino IDE</li>
+    <li>Placas de pruebas (protoboard)</li>
+    <li>Sensores IR QRE1113 o TCRT5000</li>
+    <li>Puente H (L298N o módulo L9110S)</li>
+    <li>Baterías recargables NiMH / LiPo</li>
+    <li>Chasis básico con ruedas y soporte para sensores</li>
+  </ul>
+</section>
+
+<div class="dou-cube-container">
+  <div class="dou-cube">
+    <div class="face front" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+    <div class="face back" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+    <div class="face right" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+    <div class="face left" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+    <div class="face top" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+    <div class="face bottom" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
+  </div>
+</div>
+
+
+  </main>
+
+<footer>
+  <a href="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/PSP-1000.png/2560px-PSP-1000.png"
+     target="_blank"
+     class="solo-dou">
+    <img src="https://media1.tenor.com/m/1LSpeLalIMoAAAAd/accept-jesus-as-your-savior-and-win-a-free-psp.gif"
+         alt="PSP GIF"
+         style="height:60px; vertical-align: middle;" />
+  </a>
+</footer>
+
+
+
+  <!-- Overlay ESENCIA -->
+  <div id="esencia-overlay" role="dialog" aria-modal="true" aria-hidden="true">
+    <img src="https://static.wikia.nocookie.net/tablosaf/images/8/82/Tablos_sk.png/revision/latest?cb=20231021185446&path-prefix=es" alt="Tablos" />
+    <div class="caption">7 palabras... ESENCIA</div>
+  </div>
+
+  <script>
+    const body = document.body;
+    const cubes = document.querySelectorAll('.dou-cube-container');
+    const esenciaOverlay = document.getElementById('esencia-overlay');
+
+    let typed = '';
+    let douMode = false;
+    let originalTexts = [];
+
+  function toggleDouMode() {
+    document.body.classList.toggle('dou-mode');
+    douMode = !douMode;
+
+    if (douMode) {
+      // Guardar todos los textos visibles
+      originalTexts = [];
+     document.querySelectorAll('h1, h2, h3, p, span, li, button, td, th').forEach(el => {
+  // Evitar modificar elementos con hijos IMG u otros
+  if (!el.querySelector('img')) {
+    originalTexts.push({ element: el, text: el.innerText });
+    el.innerText = 'dou';
+  }
+  document.body.classList.toggle('dou-mode', douMode);
+
+  // Mostrar u ocultar los cubos
+  document.querySelectorAll('.dou-cube-container').forEach(cube => {
+    cube.style.display = douMode ? 'block' : 'none';
+  });
+
+  // Mostrar u ocultar cosas solo del modo dou
+  document.querySelectorAll('.solo-dou').forEach(el => {
+    el.style.display = douMode ? 'block' : 'none';
+  });
+
+  const gif = document.getElementById('psp-gif');
+  if (gif) gif.style.display = douMode ? 'block' : 'none';
+});
+
+
+      // Mostrar el PSP
+      const gif = document.getElementById('psp-gif');
+      if (gif) gif.style.display = 'block';
+
+    } else {
+      // Restaurar los textos
+      originalTexts.forEach(item => {
+        item.element.innerText = item.text;
+      });
+
+      // Ocultar el PSP
+      const gif = document.getElementById('psp-gif');
+      if (gif) gif.style.display = 'none';
+    }
+  }
+
+
+    function showEsencia() {
+      esenciaOverlay.classList.add('active');
+      esenciaOverlay.setAttribute('aria-hidden', 'false');
+      body.classList.add('esencia-active');
+    }
+
+    function hideEsencia() {
+      esenciaOverlay.classList.remove('active');
+      esenciaOverlay.setAttribute('aria-hidden', 'true');
+      body.classList.remove('esencia-active');
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (esenciaOverlay.classList.contains('active')) {
+        // Si overlay activo, cualquier tecla ESC o clic fuera oculta el overlay
+        if (e.key === 'Escape') {
+          hideEsencia();
+          typed = '';
+          return;
+        }
+      }
+
+      if (e.key.length === 1) {
+        typed += e.key.toLowerCase();
+      } else if (e.key === 'Enter') {
+        const trimmedTyped = typed.trim().toLowerCase();
+
+        if (trimmedTyped === 'dou') {
+          toggleDouMode();
+        } else if (trimmedTyped === 'esencia') {
+          showEsencia();
+        }
+        typed = '';
+      } else if (e.key === 'Backspace') {
+        typed = typed.slice(0, -1);
+      }
+    });
+
+    // Cerrar overlay si haces click en él
+    esenciaOverlay.addEventListener('click', hideEsencia);
+  </script>
+
+</body>
+</html>

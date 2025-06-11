@@ -18,14 +18,13 @@
     }
 
     @keyframes fadeOutOverlay {
-  from { opacity: 1; }
-  to   { opacity: 0; }
-}
-#abbey-overlay.fading {
-  animation: fadeOutOverlay 3s forwards;
-}
+      from { opacity: 1; }
+      to   { opacity: 0; }
+    }
+    #abbey-overlay.fading {
+      animation: fadeOutOverlay 3s forwards;
+    }
 
-    
     nav {
       background: #1e1e2f;
       padding: 10px 0;
@@ -38,22 +37,57 @@
       margin: 0 6px;
       font-size: 1rem;
     }
-
+    .dropdown {
+      display: inline-block;
+      position: relative;
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background: #1e1e2f;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.18);
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      min-width: 140px;
+      z-index: 100;
+      top: 110%;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .dropdown-content li {
+      width: 100%;
+    }
+    .dropdown-content a.btn {
+      width: 100%;
+      border-radius: 0;
+      margin: 0;
+      text-align: left;
+      display: block;
+      padding: 12px 20px;
+      background: transparent;
+    }
+    .dropdown:hover .dropdown-content,
+    .dropdown:focus-within .dropdown-content {
+      display: block;
+    }
+    .dropdown > .btn::after {
+      content: '';
+    }
     @keyframes bounce {
-  0%   { transform: scale(1);}
-  20%  { transform: scale(1.1);}
-  40%  { transform: scale(0.95);}
-  60%  { transform: scale(1.05);}
-  80%  { transform: scale(0.98);}
-  100% { transform: scale(1);}
-  }
-
-  .btn:hover, .class-btn:hover {
-  background: #f44336;
-  color: #fff;
-  animation: bounce 0.4s;
-  }
-    
+      0%   { transform: scale(1);}
+      20%  { transform: scale(1.1);}
+      40%  { transform: scale(0.95);}
+      60%  { transform: scale(1.05);}
+      80%  { transform: scale(0.98);}
+      100% { transform: scale(1);}
+    }
+    .btn:hover, .class-btn:hover {
+      background: #f44336;
+      color: #fff;
+      animation: bounce 0.4s;
+    }
     header {
       background-color: #1e1e2f;
       color: white;
@@ -71,19 +105,18 @@
     }
 
     @keyframes violent-bounce-y {
-  0%   { transform: translateY(0); }
-  10%  { transform: translateY(-40px); }
-  20%  { transform: translateY(0); }
-  30%  { transform: translateY(-30px);}
-  40%  { transform: translateY(0);}
-  50%  { transform: translateY(-50px);}
-  60%  { transform: translateY(0);}
-  70%  { transform: translateY(-40px);}
-  80%  { transform: translateY(0);}
-  90%  { transform: translateY(-30px);}
-  100% { transform: translateY(0);}
-}
-    
+      0%   { transform: translateY(0); }
+      10%  { transform: translateY(-40px); }
+      20%  { transform: translateY(0); }
+      30%  { transform: translateY(-30px);}
+      40%  { transform: translateY(0);}
+      50%  { transform: translateY(-50px);}
+      60%  { transform: translateY(0);}
+      70%  { transform: translateY(-40px);}
+      80%  { transform: translateY(0);}
+      90%  { transform: translateY(-30px);}
+      100% { transform: translateY(0);}
+    }
     section {
       background-color: #ffffff;
       margin-bottom: 20px;
@@ -142,7 +175,6 @@
     footer a.solo-dou {
       display: none;
     }
-
     body.dou-mode footer a.solo-dou {
       display: inline-block;
     }
@@ -204,47 +236,6 @@
       100% { transform: rotateX(360deg) rotateY(360deg); }
     }
 
-    /* Dropdown styles */
-.dropdown {
-  display: inline-block;
-  position: relative;
-}
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background: #1e1e2f;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.18);
-  padding: 0;
-  margin: 0;
-  list-style: none;
-  min-width: 140px;
-  z-index: 100;
-  top: 110%;
-  left: 50%;
-  transform: translateX(-50%);
-}
-.dropdown-content li {
-  width: 100%;
-}
-.dropdown-content a.btn {
-  width: 100%;
-  border-radius: 0;
-  margin: 0;
-  text-align: left;
-  display: block;
-  padding: 12px 20px;
-  background: transparent;
-}
-.dropdown:hover .dropdown-content,
-.dropdown:focus-within .dropdown-content {
-  display: block;
-}
-.dropdown > .btn::after {
-  content: '';
-}
-
-    
     /* Pantalla completa para ESENCIA */
     #esencia-overlay {
       position: fixed;
@@ -282,7 +273,6 @@
       text-shadow: 0 0 8px #000;
       user-select: none;
     }
-    /* Cuando overlay está activo, se oscurece el contenido de fondo */
     body.esencia-active main,
     body.esencia-active header,
     body.esencia-active footer {
@@ -293,22 +283,20 @@
   </style>
 </head>
 <body>
-
-  
   <nav>
-  <a href="index.html" class="btn">Inicio</a>
-  <div class="dropdown">
-    <button class="btn">Clases ▼</button>
-    <ul class="dropdown-content">
-      <li><a href="class1.html" class="btn">Clase 1</a></li>
-      <li><a href="class2.html" class="btn">Clase 2</a></li>
-      <li><a href="class3.html" class="btn">Clase 3</a></li>
-      <li><a href="class4.html" class="btn">Clase 4</a></li>
-      <li><a href="class5.html" class="btn">Clase 5</a></li>
-      <li><a href="class6.html" class="btn">Clase 6</a></li>
-      <li><a href="class7.html" class="btn">Clase 7</a></li>
-    </ul>
-  </div>
+    <a href="index.html" class="btn">Inicio</a>
+    <div class="dropdown">
+      <button class="btn">Clases ▼</button>
+      <ul class="dropdown-content">
+        <li><a href="class1.html" class="btn">Clase 1</a></li>
+        <li><a href="class2.html" class="btn">Clase 2</a></li>
+        <li><a href="class3.html" class="btn">Clase 3</a></li>
+        <li><a href="class4.html" class="btn">Clase 4</a></li>
+        <li><a href="class5.html" class="btn">Clase 5</a></li>
+        <li><a href="class6.html" class="btn">Clase 6</a></li>
+        <li><a href="class7.html" class="btn">Clase 7</a></li>
+      </ul>
+    </div>
   </nav>
 
   <header>
@@ -472,18 +460,17 @@ analogWrite(enB, velDer);
   </footer>
 
   <!-- Abbey Road Overlay -->
-<div id="abbey-overlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.8); justify-content:center; align-items:center; z-index:10000;">
-  <img id="abbey-img" src="https://upload.wikimedia.org/wikipedia/en/4/42/Beatles_-_Abbey_Road.jpg" style="max-width:80vw; max-height:80vh; border-radius:14px; box-shadow:0 0 32px #fff;" />
-</div>
-<!-- Bart Overlay -->
-<div id="bart-overlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.8); justify-content:center; align-items:center; z-index:11000;">
-  <img src="https://upload.wikimedia.org/wikipedia/en/a/aa/Bart_Simpson_200px.png" style="max-width:40vw; max-height:80vh;"/>
-</div>
-<!-- Audio element -->
-<audio id="lobotomy-audio" src="lobotomy-sound-effect.mp3"></audio>
-<audio id="knee-audio" src="knee-hurts.mp3" loop></audio>
+  <div id="abbey-overlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.8); justify-content:center; align-items:center; z-index:10000;">
+    <img id="abbey-img" src="https://upload.wikimedia.org/wikipedia/en/4/42/Beatles_-_Abbey_Road.jpg" style="max-width:80vw; max-height:80vh; border-radius:14px; box-shadow:0 0 32px #fff;" />
+  </div>
+  <!-- Bart Overlay -->
+  <div id="bart-overlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.8); justify-content:center; align-items:center; z-index:11000;">
+    <img src="https://upload.wikimedia.org/wikipedia/en/a/aa/Bart_Simpson_200px.png" style="max-width:40vw; max-height:80vh;"/>
+  </div>
+  <!-- Audio element -->
+  <audio id="lobotomy-audio" src="lobotomy-sound-effect.mp3"></audio>
+  <audio id="knee-audio" src="knee-hurts.mp3" loop></audio>
 
-    
   <!-- Overlay ESENCIA -->
   <div id="esencia-overlay" role="dialog" aria-modal="true" aria-hidden="true">
     <img src="https://i.imgur.com/Ut9Th5S.png" alt="Tablos" />
@@ -494,29 +481,27 @@ analogWrite(enB, velDer);
     const body = document.body;
     const cubes = document.querySelectorAll('.dou-cube-container');
     const esenciaOverlay = document.getElementById('esencia-overlay');
-
     let typed = '';
     let douMode = false;
     let originalTexts = [];
-
     function toggleDouMode() {
       document.body.classList.toggle('dou-mode');
       douMode = !douMode;
-
-      // Show or hide the cubes based on douMode
       document.querySelectorAll('.dou-cube-container').forEach(cube => {
         cube.style.display = douMode ? 'block' : 'none';
       });
-
-      // Show or hide PSP GIF and solo-dou elements
       document.querySelectorAll('.solo-dou').forEach(el => {
         el.style.display = douMode ? 'block' : 'none';
       });
-
       if (douMode) {
-        // Save and replace all visible text
+        // Save and replace all visible text except dropdown class links/buttons
         originalTexts = [];
         document.querySelectorAll('h1, h2, h3, p, span, li, button, td, th').forEach(el => {
+          // Skip class dropdown items and the dropdown button
+          if (
+            el.closest('.dropdown-content') ||
+            (el.classList.contains('btn') && el.innerText.includes('Clases'))
+          ) return;
           if (!el.querySelector('img')) {
             originalTexts.push({ element: el, text: el.innerText });
             el.innerText = 'dou';
@@ -529,21 +514,17 @@ analogWrite(enB, velDer);
         });
       }
     }
-
     function showEsencia() {
       esenciaOverlay.classList.add('active');
       esenciaOverlay.setAttribute('aria-hidden', 'false');
       body.classList.add('esencia-active');
     }
-
     function hideEsencia() {
       esenciaOverlay.classList.remove('active');
       esenciaOverlay.setAttribute('aria-hidden', 'true');
       body.classList.remove('esencia-active');
     }
-
     document.addEventListener('keydown', (e) => {
-      // If the "esencia" overlay is active, allow ESC to close it
       if (esenciaOverlay.classList.contains('active')) {
         if (e.key === 'Escape') {
           hideEsencia();
@@ -551,12 +532,10 @@ analogWrite(enB, velDer);
           return;
         }
       }
-
       if (e.key.length === 1) {
         typed += e.key.toLowerCase();
       } else if (e.key === 'Enter') {
         const trimmedTyped = typed.trim().toLowerCase();
-
         if (trimmedTyped === 'dou') {
           e.preventDefault();
           toggleDouMode();
@@ -573,80 +552,60 @@ analogWrite(enB, velDer);
         typed = typed.slice(0, -1);
       }
     });
-
-    // Cerrar overlay si haces click en él
     esenciaOverlay.addEventListener('click', hideEsencia);
   </script>
-   <script>
-const abbeyOverlay = document.getElementById('abbey-overlay');
-const abbeyImg = document.getElementById('abbey-img');
-const lobotomyAudio = document.getElementById('lobotomy-audio');
-const bartOverlay = document.getElementById('bart-overlay');
-const kneeAudio = document.getElementById('knee-audio');
-
-let bartTyped = "";
-
-function playLobotomy() {
-  lobotomyAudio.pause();
-  lobotomyAudio.currentTime = 0;
-  // Random pitch: from 0.5x to 4.0x speed
-  const randomPitch = Math.random() * (4.0 - 0.5) + 0.5;
-  lobotomyAudio.playbackRate = randomPitch;
-
-  // Try to ensure pitch is not preserved, for best effect
-  if ('preservesPitch' in lobotomyAudio) lobotomyAudio.preservesPitch = false;
-  if ('mozPreservesPitch' in lobotomyAudio) lobotomyAudio.mozPreservesPitch = false;
-  if ('webkitPreservesPitch' in lobotomyAudio) lobotomyAudio.webkitPreservesPitch = false;
-
-  lobotomyAudio.play();
-}
-     
-// Homer Cube click
-document.querySelector('.dou-cube-container').addEventListener('click', () => {
-  // Show Abbey overlay
-  abbeyOverlay.style.display = "flex";
-  abbeyOverlay.style.opacity = "1";
-  playLobotomy();
-
-  // After 2.5s: fade out Abbey, show Bart overlay
-  setTimeout(() => {
-    abbeyOverlay.classList.add('fading');
-    // After fade (1.2s), hide Abbey and show Bart
-    setTimeout(() => {
-      abbeyOverlay.style.display = "none";
-      abbeyOverlay.classList.remove('fading');
-      bartOverlay.style.display = "flex";
-      // Stop lobotomy sound
+  <script>
+    const abbeyOverlay = document.getElementById('abbey-overlay');
+    const abbeyImg = document.getElementById('abbey-img');
+    const lobotomyAudio = document.getElementById('lobotomy-audio');
+    const bartOverlay = document.getElementById('bart-overlay');
+    const kneeAudio = document.getElementById('knee-audio');
+    let bartTyped = "";
+    function playLobotomy() {
       lobotomyAudio.pause();
       lobotomyAudio.currentTime = 0;
-      // Play knee-hurts sound on loop
-      kneeAudio.currentTime = 0;
-      kneeAudio.loop = true;
-      kneeAudio.play();
-    }, 1200);
-  }, 2500);
-});
-
-// Hide Bart overlay when user types "bart"
-document.addEventListener('keydown', function(e) {
-  if (bartOverlay.style.display === "flex") {
-    if (e.key.length === 1) {
-      bartTyped += e.key.toLowerCase();
-      if (bartTyped.endsWith("bart")) {
-        bartOverlay.style.display = "none";
-        bartTyped = "";
-        // Stop knee-hurts loop
-        kneeAudio.pause();
-        kneeAudio.currentTime = 0;
-      }
-      // prevent page scroll etc.
-      e.preventDefault();
-    } else if (e.key === 'Backspace') {
-      bartTyped = bartTyped.slice(0, -1);
-      e.preventDefault();
+      const randomPitch = Math.random() * (4.0 - 0.5) + 0.5;
+      lobotomyAudio.playbackRate = randomPitch;
+      if ('preservesPitch' in lobotomyAudio) lobotomyAudio.preservesPitch = false;
+      if ('mozPreservesPitch' in lobotomyAudio) lobotomyAudio.mozPreservesPitch = false;
+      if ('webkitPreservesPitch' in lobotomyAudio) lobotomyAudio.webkitPreservesPitch = false;
+      lobotomyAudio.play();
     }
-  }
-});
-</script>
+    document.querySelector('.dou-cube-container').addEventListener('click', () => {
+      abbeyOverlay.style.display = "flex";
+      abbeyOverlay.style.opacity = "1";
+      playLobotomy();
+      setTimeout(() => {
+        abbeyOverlay.classList.add('fading');
+        setTimeout(() => {
+          abbeyOverlay.style.display = "none";
+          abbeyOverlay.classList.remove('fading');
+          bartOverlay.style.display = "flex";
+          lobotomyAudio.pause();
+          lobotomyAudio.currentTime = 0;
+          kneeAudio.currentTime = 0;
+          kneeAudio.loop = true;
+          kneeAudio.play();
+        }, 1200);
+      }, 2500);
+    });
+    document.addEventListener('keydown', function(e) {
+      if (bartOverlay.style.display === "flex") {
+        if (e.key.length === 1) {
+          bartTyped += e.key.toLowerCase();
+          if (bartTyped.endsWith("bart")) {
+            bartOverlay.style.display = "none";
+            bartTyped = "";
+            kneeAudio.pause();
+            kneeAudio.currentTime = 0;
+          }
+          e.preventDefault();
+        } else if (e.key === 'Backspace') {
+          bartTyped = bartTyped.slice(0, -1);
+          e.preventDefault();
+        }
+      }
+    });
+  </script>
 </body>
 </html>

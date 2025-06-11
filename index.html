@@ -578,11 +578,12 @@ analogWrite(enB, velDer);
     // Cerrar overlay si haces click en él
     esenciaOverlay.addEventListener('click', hideEsencia);
   </script>
-    <script>
+   <script>
 const abbeyOverlay = document.getElementById('abbey-overlay');
 const abbeyImg = document.getElementById('abbey-img');
 const lobotomyAudio = document.getElementById('lobotomy-audio');
 const bartOverlay = document.getElementById('bart-overlay');
+const kneeAudio = document.getElementById('knee-audio');
 
 let bartTyped = "";
 
@@ -608,23 +609,17 @@ document.querySelector('.dou-cube-container').addEventListener('click', () => {
       abbeyOverlay.style.display = "none";
       abbeyOverlay.classList.remove('fading');
       bartOverlay.style.display = "flex";
-      const kneeAudio = document.getElementById('knee-audio');
-// ... inside the setTimeout after Abbey fade:
-abbeyOverlay.style.display = "none";
-abbeyOverlay.classList.remove('fading');
-bartOverlay.style.display = "flex";
-// Stop lobotomy sound
-lobotomyAudio.pause();
-lobotomyAudio.currentTime = 0;
-// Play knee-hurts sound once
-kneeAudio.currentTime = 0;
-kneeAudio.play();
+      // Stop lobotomy sound
+      lobotomyAudio.pause();
+      lobotomyAudio.currentTime = 0;
+      // Play knee-hurts sound on loop
+      kneeAudio.currentTime = 0;
+      kneeAudio.loop = true;
+      kneeAudio.play();
     }, 1200);
   }, 2500);
 });
 
-
-      
 // Hide Bart overlay when user types "bart"
 document.addEventListener('keydown', function(e) {
   if (bartOverlay.style.display === "flex") {
@@ -633,6 +628,9 @@ document.addEventListener('keydown', function(e) {
       if (bartTyped.endsWith("bart")) {
         bartOverlay.style.display = "none";
         bartTyped = "";
+        // Stop knee-hurts loop
+        kneeAudio.pause();
+        kneeAudio.currentTime = 0;
       }
       // prevent page scroll etc.
       e.preventDefault();

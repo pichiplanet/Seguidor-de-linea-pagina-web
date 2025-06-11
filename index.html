@@ -590,10 +590,15 @@ let bartTyped = "";
 function playLobotomy() {
   lobotomyAudio.pause();
   lobotomyAudio.currentTime = 0;
-  lobotomyAudio.playbackRate = 1.4; // chipmunk speed & pitch
-  lobotomyAudio.preservesPitch = false;
-  lobotomyAudio.mozPreservesPitch = false;
-  lobotomyAudio.webkitPreservesPitch = false;
+  // Random pitch: from 0.5x to 4.0x speed
+  const randomPitch = Math.random() * (4.0 - 0.5) + 0.5;
+  lobotomyAudio.playbackRate = randomPitch;
+
+  // Try to ensure pitch is not preserved, for best effect
+  if ('preservesPitch' in lobotomyAudio) lobotomyAudio.preservesPitch = false;
+  if ('mozPreservesPitch' in lobotomyAudio) lobotomyAudio.mozPreservesPitch = false;
+  if ('webkitPreservesPitch' in lobotomyAudio) lobotomyAudio.webkitPreservesPitch = false;
+
   lobotomyAudio.play();
 }
      

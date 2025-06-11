@@ -159,6 +159,33 @@
       color: #fff;
     }
 
+    /* DOU MODE BUTTON FOR MOBILE */
+    #dou-toggle, #esencia-toggle {
+      position: fixed;
+      z-index: 9999;
+      display: none;
+      border-radius: 50%;
+      width: 56px;
+      height: 56px;
+      font-size: 1.2em;
+      border: none;
+      box-shadow: 0 2px 8px rgba(44,44,44,0.22);
+      background: #f44336;
+      color: #fff;
+      right: 24px;
+      bottom: 24px;
+      cursor: pointer;
+      opacity: 0.93;
+    }
+    #esencia-toggle {
+      right: 24px;
+      bottom: 90px;
+      background: #1e1e2f;
+    }
+    @media (max-width: 800px) {
+      #dou-toggle, #esencia-toggle { display: block; }
+    }
+
     footer {
       background-color: #1e1e2f;
       color: white;
@@ -283,6 +310,10 @@
   </style>
 </head>
 <body>
+  <!-- MOBILE MODE BUTTONS -->
+  <button id="dou-toggle" title="Modo dou (solo móvil)">DOU</button>
+  <button id="esencia-toggle" title="Mostrar ESENCIA (solo móvil)">ESE</button>
+
   <nav>
     <a href="index.html" class="btn">Inicio</a>
     <div class="dropdown">
@@ -484,6 +515,17 @@ analogWrite(enB, velDer);
     let typed = '';
     let douMode = false;
     let originalTexts = [];
+
+    // MOBILE BUTTONS (for dou/esencia mode)
+    const douBtn = document.getElementById('dou-toggle');
+    const esenciaBtn = document.getElementById('esencia-toggle');
+    douBtn.addEventListener('click', function() {
+      toggleDouMode();
+    });
+    esenciaBtn.addEventListener('click', function() {
+      showEsencia();
+    });
+
     function toggleDouMode() {
       document.body.classList.toggle('dou-mode');
       douMode = !douMode;
@@ -553,6 +595,27 @@ analogWrite(enB, velDer);
       }
     });
     esenciaOverlay.addEventListener('click', hideEsencia);
+
+    // Optionally: enable long-press on header for dou mode on touch devices (extra easter egg)
+    let douTimeout;
+    document.querySelector('header').addEventListener('touchstart', function() {
+      douTimeout = setTimeout(toggleDouMode, 1000); // 1 second press
+    });
+    document.querySelector('header').addEventListener('touchend', function() {
+      clearTimeout(douTimeout);
+    });
+    // Optionally: double-tap header for esencia
+    let lastTap = 0;
+    document.querySelector('header').addEventListener('touchend', function(e) {
+      const now = new Date().getTime();
+      if (now - lastTap < 400) { showEsencia(); }
+      lastTap = now;
+    });
+
+    // Query param activation (index.html?dou etc.)
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('dou')) toggleDouMode();
+    if (params.has('esencia')) showEsencia();
   </script>
   <script>
     const abbeyOverlay = document.getElementById('abbey-overlay');

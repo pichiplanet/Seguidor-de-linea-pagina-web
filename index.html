@@ -542,10 +542,9 @@ analogWrite(enB, velDer);
       body.classList.remove('esencia-active');
     }
 
-document.addEventListener('keydown', (e) => {
-  // Handle closing the "esencia" overlay
+  document.addEventListener('keydown', (e) => {
+  // If the "esencia" overlay is active, allow ESC to close it
   if (esenciaOverlay.classList.contains('active')) {
-    // If overlay is active, any ESC key hides it and clears typed buffer
     if (e.key === 'Escape') {
       hideEsencia();
       typed = '';
@@ -559,7 +558,7 @@ document.addEventListener('keydown', (e) => {
     const trimmedTyped = typed.trim().toLowerCase();
 
     if (trimmedTyped === 'dou') {
-      e.preventDefault(); // Prevent link/button activation on Enter
+      e.preventDefault(); // Only prevent default if actually toggling dou mode
       toggleDouMode();
       typed = '';
       return;
@@ -569,6 +568,7 @@ document.addEventListener('keydown', (e) => {
       typed = '';
       return;
     }
+    // If Enter is pressed but not for a secret code, clear the buffer
     typed = '';
   } else if (e.key === 'Backspace') {
     typed = typed.slice(0, -1);

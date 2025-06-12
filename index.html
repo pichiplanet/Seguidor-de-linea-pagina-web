@@ -96,7 +96,34 @@
       position: relative;
       z-index: 2;
     }
+    
+    @keyframes swipeOutUp {
+  0% { transform: translateY(0);}
+  100% { transform: translateY(-120vh); opacity: 0;}
+}
+@keyframes swipeOutDown {
+  0% { transform: translateY(0);}
+  100% { transform: translateY(120vh); opacity: 0;}
+}
+@keyframes swipeOutLeft {
+  0% { transform: translateX(0);}
+  100% { transform: translateX(-120vw); opacity: 0;}
+}
+@keyframes swipeOutRight {
+  0% { transform: translateX(0);}
+  100% { transform: translateX(120vw); opacity: 0;}
+}
+#bart-overlay.swipe-out-up    { animation: swipeOutUp 0.5s cubic-bezier(.45,1.5,.6,1) forwards; }
+#bart-overlay.swipe-out-down  { animation: swipeOutDown 0.5s cubic-bezier(.45,1.5,.6,1) forwards; }
+#bart-overlay.swipe-out-left  { animation: swipeOutLeft 0.5s cubic-bezier(.45,1.5,.6,1) forwards; }
+#bart-overlay.swipe-out-right { animation: swipeOutRight 0.5s cubic-bezier(.45,1.5,.6,1) forwards; }
 
+/* Prevent scrolling when Bart is visible */
+body.bart-active {
+  overflow: hidden !important;
+  touch-action: none !important;
+}
+    
     main {
       padding: 20px;
       position: relative;
@@ -516,6 +543,75 @@ analogWrite(enB, velDer);
     let douMode = false;
     let originalTexts = [];
 
+    // Enable body scroll lock when Bart is shown
+function showBartOverlayWithLock() {
+  bartOverlay.style.display = "flex";
+  document.body.classList.add('bart-active');
+  kneeAudio.currentTime = 0;
+  kneeAudio.loop = true;
+  kneeAudio.play();
+}
+function hideBartOverlayAndUnlock() {
+  bartOverlay.style.display = "none";
+  document.body.classList.remove('bart-active');
+  kneeAudio.pause();
+  kneeAudio.currentTime = 0;
+}
+
+// Swipe-to-dismiss with 4 directions + prevent scroll
+let bartStartX = null, bartStartY = null;
+let bartSwiped = false;
+bartOverlay.addEventListener('touchstart', function(e) {
+  if (e.touches.length === 1) {
+    bartStartX = e.touches[0].clientX;
+    bartStartY = e.touches[0].clientY;
+    bartSwiped = false;
+  }
+}, {passive: false});
+bartOverlay.addEventListener('touchmove', function(e) {
+  // Prevent scrolling while overlay is open
+  e.preventDefault();
+}, {passive: false});
+bartOverlay.addEventListener('touchend', function(e) {
+  if (bartStartX !== null && bartStartY !== null && e.changedTouches.length === 1 && !bartSwiped) {
+    let endX = e.changedTouches[0].clientX;
+    let endY = e.changedTouches[0].clientY;
+    let deltaX = endX - bartStartX;
+    let deltaY = endY - bartStartY;
+    // Detect the main direction (horizontal or vertical)
+    const threshold = 60;
+    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > threshold) {
+      bartSwiped = true;
+      if (deltaX > 0) {
+        // Swipe right
+        bartOverlay.classList.add('swipe-out-right');
+      } else {
+        // Swipe left
+        bartOverlay.classList.add('swipe-out-left');
+      }
+    } else if (Math.abs(deltaY) > threshold) {
+      bartSwiped = true;
+      if (deltaY < 0) {
+        // Swipe up
+        bartOverlay.classList.add('swipe-out-up');
+      } else {
+        // Swipe down
+        bartOverlay.classList.add('swipe-out-down');
+      }
+    }
+    if (bartSwiped) {
+      setTimeout(function() {
+        bartOverlay.classList.remove('swipe-out-up','swipe-out-down','swipe-out-left','swipe-out-right');
+        hideBartOverlayAndUnlock();
+      }, 500);
+    }
+  }
+  bartStartX = null;
+  bartStartY = null;
+}, {passive: false});
+
+
+    
     // MOBILE BUTTONS (for dou/esencia mode)
     const douBtn = document.getElementById('dou-toggle');
     const esenciaBtn = document.getElementById('esencia-toggle');
@@ -643,12 +739,9 @@ analogWrite(enB, velDer);
         setTimeout(() => {
           abbeyOverlay.style.display = "none";
           abbeyOverlay.classList.remove('fading');
-          bartOverlay.style.display = "flex";
           lobotomyAudio.pause();
           lobotomyAudio.currentTime = 0;
-          kneeAudio.currentTime = 0;
-          kneeAudio.loop = true;
-          kneeAudio.play();
+          showBartOverlayWithLock();
         }, 1200);
       }, 2500);
     });

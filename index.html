@@ -96,7 +96,16 @@
       position: relative;
       z-index: 2;
     }
-    
+    /* Exaggeratedly wide horse image */
+    .wide-horse {
+      display: block;
+      margin: auto;
+      margin-bottom: 18px;
+      width: 600px;
+      height: 80px;
+      object-fit: fill;
+      image-rendering: auto;
+    }
     @keyframes swipeOutUp {
       0% { transform: translateY(0);}
       100% { transform: translateY(-120vh); opacity: 0;}
@@ -334,6 +343,17 @@
       pointer-events: none;
       user-select: none;
     }
+    /* Abbey overlay full screen image */
+    #abbey-img {
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      margin: 0;
+      padding: 0;
+      border-radius: 0;
+      box-shadow: none;
+      display: block;
+    }
   </style>
 </head>
 <body>
@@ -358,14 +378,14 @@
   </nav>
 
   <header>
-    <h1>Curso: Robot Seguidor de Línea</h1>
-    <p>Construcción y programación desde cero</p>
-      <img
+    <!-- Exaggeratedly wide (stretched) horse image at the top of the title -->
+    <img
       src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Horse_eating_cropped.jpg"
       alt="Exaggeratedly wide horse"
       class="wide-horse"
-      style="display:block;margin:auto;margin-bottom:18px;width:600px;height:80px;object-fit:fill;image-rendering:auto;"
     />
+    <h1>🤖 Curso: Robot Seguidor de Línea</h1>
+    <p>Construcción y programación desde cero</p>
   </header>
 
   <main>
@@ -379,14 +399,13 @@
         <div class="face bottom" style="background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');"></div>
       </div>
     </div>
-
+    <!-- ... rest of main content stays the same ... -->
     <section>
-      <h2>Objetivo</h2>
+      <h2>🧠 Objetivo</h2>
       <p>Que los estudiantes entiendan cómo construir y programar un robot seguidor de línea desde cero, combinando electrónica, mecánica y programación.</p>
     </section>
-
     <section>
-      <h2>CLASE 1: Introducción al proyecto y componentes</h2>
+      <h2>📚 CLASE 1: Introducción al proyecto y componentes</h2>
       <ul>
         <li>¿Qué es un seguidor de línea?</li>
         <li>Tipos de sensores IR (reflectivos)</li>
@@ -395,9 +414,8 @@
       </ul>
       <a href="class1.html" class="btn">Ir a la clase &rarr;</a>
     </section>
-
     <section>
-      <h2>CLASE 2: Montaje del hardware</h2>
+      <h2>🔌 CLASE 2: Montaje del hardware</h2>
       <pre>
 Sensor Izq → A0  
 Sensor Der → A1  
@@ -407,9 +425,8 @@ Enable → D9 y D10 (PWM)
       </pre>
       <a href="class2.html" class="btn">Ir a la clase &rarr;</a>
     </section>
-
     <section>
-      <h2>CLASE 3: Programación básica</h2>
+      <h2>💻 CLASE 3: Programación básica</h2>
       <pre>
 void setup() {
   pinMode(A0, INPUT);
@@ -435,9 +452,8 @@ void loop() {
       </pre>
       <a href="class3.html" class="btn">Ir a la clase &rarr;</a>
     </section>
-
     <section>
-      <h2>CLASE 4: Control básico de motores</h2>
+      <h2>⚙️ CLASE 4: Control básico de motores</h2>
       <ul>
         <li>Control de velocidad con PWM</li>
         <li>Funciones para mover hacia adelante, girar izquierda/derecha, detenerse</li>
@@ -450,9 +466,8 @@ void moverAdelante() {
       </code></pre>
       <a href="class4.html" class="btn">Ir a la clase &rarr;</a>
     </section>
-
     <section>
-      <h2>CLASE 5: Algoritmo básico de seguimiento</h2>
+      <h2>🤖 CLASE 5: Algoritmo básico de seguimiento</h2>
       <ul>
         <li>Lógica de decisión simple:</li>
         <ul>
@@ -470,9 +485,8 @@ si (ambos blancos) → detener
       </code></pre>
       <a href="class5.html" class="btn">Ir a la clase &rarr;</a>
     </section>
-
     <section>
-      <h2>CLASE 6: Mejora del control – Proporcional (PID opcional)</h2>
+      <h2>🛠️ CLASE 6: Mejora del control – Proporcional (PID opcional)</h2>
       <ul>
         <li>Concepto de control proporcional</li>
         <li>Usar diferencia entre sensores para ajustar velocidad suavemente</li>
@@ -488,9 +502,8 @@ analogWrite(enB, velDer);
       </code></pre>
       <a href="class6.html" class="btn">Ir a la clase &rarr;</a>
     </section>
-
     <section>
-      <h2>CLASE 7: Práctica final y desafío</h2>
+      <h2>🏁 CLASE 7: Práctica final y desafío</h2>
       <ul>
         <li>Repaso general</li>
         <li>Calibración final</li>
@@ -499,9 +512,8 @@ analogWrite(enB, velDer);
       <p>Organizar una competencia donde los robots sigan una línea completa sin salirse.</p>
       <a href="class7.html" class="btn">Ir a la clase &rarr;</a>
     </section>
-
     <section>
-      <h2>Recursos recomendados</h2>
+      <h2>📎 Recursos recomendados</h2>
       <ul>
         <li>Arduino IDE</li>
         <li>Placas de pruebas (protoboard)</li>
@@ -525,7 +537,7 @@ analogWrite(enB, velDer);
 
   <!-- Abbey Road Overlay -->
   <div id="abbey-overlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.8); justify-content:center; align-items:center; z-index:10000;">
-    <img id="abbey-img" src="https://upload.wikimedia.org/wikipedia/en/4/42/Beatles_-_Abbey_Road.jpg" style="max-width:80vw; max-height:80vh; border-radius:14px; box-shadow:0 0 32px #fff;" />
+    <img id="abbey-img" src="https://upload.wikimedia.org/wikipedia/en/4/42/Beatles_-_Abbey_Road.jpg" />
   </div>
   <!-- Bart Overlay -->
   <div id="bart-overlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.8); justify-content:center; align-items:center; z-index:11000;">

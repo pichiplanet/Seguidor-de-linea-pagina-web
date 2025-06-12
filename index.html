@@ -96,15 +96,18 @@
       position: relative;
       z-index: 2;
     }
-    /* Exaggeratedly wide horse image */
+    /* Exaggeratedly wide horse image, only in dou mode */
     .wide-horse {
-      display: block;
+      display: none;
       margin: auto;
       margin-bottom: 18px;
       width: 600px;
       height: 80px;
       object-fit: fill;
       image-rendering: auto;
+    }
+    body.dou-mode .wide-horse {
+      display: block;
     }
     @keyframes swipeOutUp {
       0% { transform: translateY(0);}
@@ -378,9 +381,9 @@
   </nav>
 
   <header>
-    <!-- Exaggeratedly wide (stretched) horse image at the top of the title -->
+    <!-- Exaggeratedly wide (stretched) horse image at the top of the title, only in dou mode -->
     <img
-      src="https://cdn.britannica.com/96/1296-050-4A65097D/gelding-bay-coat.jpg"
+      src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Horse_eating_cropped.jpg"
       alt="Exaggeratedly wide horse"
       class="wide-horse"
     />

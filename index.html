@@ -792,19 +792,5 @@ analogWrite(enB, velDer);
     if (params.has('dou')) toggleDouMode();
     if (params.has('esencia')) showEsencia();
   </script>
-
-  <!-- POOL GAME IMPORT, ONLY ONE LINE NEEDED -->
-  <script src="pool-game.js"></script>
-  <script>
-    // Patch dou mode to also toggle the pool game overlay
-    if (typeof showOrHidePoolGame === "function") {
-      showOrHidePoolGame();
-      const origToggleDouMode = toggleDouMode;
-      window.toggleDouMode = function() {
-        origToggleDouMode();
-        showOrHidePoolGame();
-      }
-    }
-  </script>
 </body>
 </html>

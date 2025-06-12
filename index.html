@@ -791,7 +791,19 @@ analogWrite(enB, velDer);
     const params = new URLSearchParams(window.location.search);
     if (params.has('dou')) toggleDouMode();
     if (params.has('esencia')) showEsencia();
+
+    <script src="pool-game.js"></script>
+
+    // Ensure pool game appears/disappears with dou mode:
+if (typeof showOrHidePoolGame === "function") {
+  showOrHidePoolGame();
+  // Patch toggleDouMode to always call showOrHidePoolGame
+  const origToggleDouMode = toggleDouMode;
+  window.toggleDouMode = function() {
+    origToggleDouMode();
+    showOrHidePoolGame();
+  }
+}
   </script>
-<script src="pool-game.js"></script>
 </body>
 </html>

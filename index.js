@@ -9,8 +9,6 @@ const abbeyImg = document.getElementById('abbey-img');
 const lobotomyAudio = document.getElementById('lobotomy-audio');
 const bartOverlay = document.getElementById('bart-overlay');
 const kneeAudio = document.getElementById('knee-audio');
-const douBtn = document.getElementById('dou-toggle');
-const esenciaBtn = document.getElementById('esencia-toggle');
 let typed = '';
 let lastTypedTime = Date.now();
 let douMode = false;
@@ -121,10 +119,6 @@ bartOverlay.addEventListener('touchend', function(e) {
   bartStartX = null;
   bartStartY = null;
 }, {passive: false});
-
-// === Event Listeners for Mobile Buttons ===
-douBtn.addEventListener('click', toggleDouMode);
-esenciaBtn.addEventListener('click', showEsencia);
 
 // === Key Typing Detector for DOU/ESENCIA ===
 document.addEventListener('keydown', function(e) {

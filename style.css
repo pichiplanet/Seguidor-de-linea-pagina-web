@@ -1,36 +1,45 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans+Condensed:700|Open+Sans:400,400i,700,700i);
+
 :root {
   --accent-bg: #2f4f4f;
+  --accent-bg-text: #fff;
+  --secondary-bg: #1e1e2f;
+  --secondary-bg-text: #fff;
+  --normal-bg: #f8f9fa;
+  --normal-bg-text: #000;
+  --normal-separator: #e1e6f3;
+  --link-text: #336699;
+  --link-text-hover: #204060;
+  --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
 }
 
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f6f8;
+  font-family: "Open Sans", Arial, sans-serif;
+  background-color: var(--normal-bg);
   margin: 0;
   padding: 0;
   transition: all 0.3s ease;
-  color: #000;
+  color: var(--normal-bg-text);
   position: relative;
   overflow-x: hidden;
 }
 
-@keyframes fadeOutOverlay {
-  from {
-    opacity: 1;
-  }
-
-  to {
-    opacity: 0;
-  }
+a {
+  color: var(--link-text);
+  text-decoration: none;
 }
 
-#abbey-overlay.fading {
-  animation: fadeOutOverlay 3s forwards;
+a:hover {
+  text-decoration: underline;
 }
 
 nav {
-  background: #1e1e2f;
+  background: var(--secondary-bg);
   padding: 10px 0;
-  text-align: center;
   position: sticky;
   top: 0;
   z-index: 10;
@@ -81,34 +90,8 @@ nav .btn {
   display: block;
 }
 
-.dropdown>.btn::after {
-  content: '';
-}
-
-@keyframes bounce {
-  0% {
-    transform: scale(1);
-  }
-
-  20% {
-    transform: scale(1.1);
-  }
-
-  40% {
-    transform: scale(0.95);
-  }
-
-  60% {
-    transform: scale(1.05);
-  }
-
-  80% {
-    transform: scale(0.98);
-  }
-
-  100% {
-    transform: scale(1);
-  }
+.dropdown > .btn::after {
+  content: "";
 }
 
 .btn:hover,
@@ -121,10 +104,132 @@ nav .btn {
 header {
   background-color: #1e1e2f;
   color: white;
-  padding: 20px;
+  padding: 40px;
+  margin-bottom: 40px;
   text-align: center;
   position: relative;
   z-index: 2;
+}
+
+.header-bg {
+  position: absolute;
+  top: 0;
+  left: -20%;
+  width: 120%;
+  height: 100%;
+  z-index: -1;
+  object-fit: cover;
+  object-position: center;
+  filter: blur(20px);
+}
+
+main {
+  padding: 20px;
+  position: relative;
+  z-index: 2;
+  transition: filter 0.3s ease;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.class-card {
+  background-color: #ffffff;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 2;
+}
+
+.class-card > .title {
+  font-family: "Open Sans Condensed";
+  background-color: var(--accent-bg);
+  color: white;
+  padding: 20px;
+  margin-block-start: 0;
+  margin-block-end: 0;
+}
+
+.class-card > .content {
+  display: flex;
+  flex-direction: row-reverse;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.class-card > .content > img {
+  width: 50%;
+  aspect-ratio: 1.75;
+  object-fit: cover;
+}
+
+.class-card > .content > div {
+  padding: 20px;
+  width: 50%;
+  box-sizing: border-box;
+}
+
+.class-card ul {
+  margin-block: 0;
+}
+
+.class-card > .link {
+  display: block;
+  border-top: 1px solid var(--normal-separator);
+  padding: 10px 20px;
+  font-family: "Open Sans Condensed";
+  font-size: large;
+}
+
+h2,
+h3 {
+  color: #333;
+}
+
+pre {
+  background-color: #eee;
+  padding: 10px;
+  border-radius: 4px;
+  overflow-x: auto;
+  font-family: monospace;
+}
+
+.btn,
+.class-btn {
+  display: inline-block;
+  margin-top: 12px;
+  margin-right: 8px;
+  padding: 10px 20px;
+  background: #1e1e2f;
+  color: #fff;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.2s;
+  border: none;
+  cursor: pointer;
+}
+
+.btn:hover,
+.class-btn:hover {
+  background: #f44336;
+  color: #fff;
+}
+
+/* todo el brainrot aca abajo */
+
+@keyframes fadeOutOverlay {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+#abbey-overlay.fading {
+  animation: fadeOutOverlay 3s forwards;
 }
 
 @keyframes swipeOutUp {
@@ -172,32 +277,25 @@ header {
 }
 
 #bart-overlay.swipe-out-up {
-  animation: swipeOutUp 0.5s cubic-bezier(.45, 1.5, .6, 1) forwards;
+  animation: swipeOutUp 0.5s cubic-bezier(0.45, 1.5, 0.6, 1) forwards;
 }
 
 #bart-overlay.swipe-out-down {
-  animation: swipeOutDown 0.5s cubic-bezier(.45, 1.5, .6, 1) forwards;
+  animation: swipeOutDown 0.5s cubic-bezier(0.45, 1.5, 0.6, 1) forwards;
 }
 
 #bart-overlay.swipe-out-left {
-  animation: swipeOutLeft 0.5s cubic-bezier(.45, 1.5, .6, 1) forwards;
+  animation: swipeOutLeft 0.5s cubic-bezier(0.45, 1.5, 0.6, 1) forwards;
 }
 
 #bart-overlay.swipe-out-right {
-  animation: swipeOutRight 0.5s cubic-bezier(.45, 1.5, .6, 1) forwards;
+  animation: swipeOutRight 0.5s cubic-bezier(0.45, 1.5, 0.6, 1) forwards;
 }
 
 /* Prevent scrolling when Bart is visible */
 body.bart-active {
   overflow: hidden !important;
   touch-action: none !important;
-}
-
-main {
-  padding: 20px;
-  position: relative;
-  z-index: 2;
-  transition: filter 0.3s ease;
 }
 
 @keyframes violent-bounce-y {
@@ -246,71 +344,6 @@ main {
   }
 }
 
-.class-card {
-  background-color: #ffffff;
-  margin-bottom: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-  position: relative;
-  z-index: 2;
-}
-
-.class-card > h2 {
-  background-color: var(--accent-bg);
-  color: white;
-  padding: 20px;
-  margin-block-start: 0;
-  margin-block-end: 0;
-}
-
-.class-card > div {
-  padding: 20px;
-}
-
-.class-card ul {
-  margin-block: 0;
-}
-
-.class-card > a {
-  width: 100%;
-}
-
-h2,
-h3 {
-  color: #333;
-}
-
-pre {
-  background-color: #eee;
-  padding: 10px;
-  border-radius: 4px;
-  overflow-x: auto;
-  font-family: monospace;
-}
-
-.btn,
-.class-btn {
-  display: inline-block;
-  margin-top: 12px;
-  margin-right: 8px;
-  padding: 10px 20px;
-  background: #1e1e2f;
-  color: #fff;
-  border-radius: 6px;
-  text-decoration: none;
-  font-weight: bold;
-  transition: background 0.2s;
-  border: none;
-  cursor: pointer;
-}
-
-.btn:hover,
-.class-btn:hover {
-  background: #f44336;
-  color: #fff;
-}
-
 /* DOU MODE BUTTON FOR MOBILE */
 #dou-toggle,
 #esencia-toggle {
@@ -338,7 +371,6 @@ pre {
 }
 
 @media (max-width: 800px) {
-
   #dou-toggle,
   #esencia-toggle {
     display: block;
@@ -369,7 +401,7 @@ body.dou-mode footer a.solo-dou {
 
 /* Modo Dou */
 body.dou-mode {
-  background-image: url('https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781');
+  background-image: url("https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781");
   background-repeat: repeat;
   background-size: 150px;
   color: #000;
@@ -399,7 +431,7 @@ body.dou-mode h3 {
   position: relative;
   z-index: 5;
   display: none;
-  animation: violent-bounce-y 0.8s infinite cubic-bezier(.23, 1.22, .61, .94);
+  animation: violent-bounce-y 0.8s infinite cubic-bezier(0.23, 1.22, 0.61, 0.94);
 }
 
 .dou-cube {
@@ -491,7 +523,7 @@ body.dou-mode h3 {
   color: white;
   font-size: 2.5rem;
   font-weight: bold;
-  font-family: 'Arial Black', Arial, sans-serif;
+  font-family: "Arial Black", Arial, sans-serif;
   text-shadow: 0 0 8px #000;
   user-select: none;
 }

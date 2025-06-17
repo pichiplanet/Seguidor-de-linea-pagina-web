@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Clase 1: Introducción al proyecto y componentes</title>
-  <link rel="icon" type="image/png" href="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Godot_icon.svg/1200px-Godot_icon.svg.png">
+  <link rel="icon" type="image/png" href="assets/brainrot/3dgifmaker45951.png">
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -107,61 +107,61 @@
     </div>
   </nav>
   <header>
-    <h1>Clase 1: Introducción al proyecto y componentes</h1>
+    <h1>Clase 1: Introducción al proyecto y sus componentes</h1>
     <p>Curso: Robot Seguidor de Línea</p>
   </header>
   <main>
     <section>
       <h2>🧠 Objetivo de la clase</h2>
       <p>
-        Comprender los fundamentos y los componentes esenciales para construir un robot seguidor de línea desde cero, integrando conocimientos de electrónica, mecánica y programación.
+        Entender los principios fundamentales y los elementos clave involucrados en el diseño y la construcción de un robot seguidor de línea. Se busca integrar conocimientos de electrónica, mecánica y programación para sentar las bases de un desarrollo exitoso del proyecto a lo largo del curso.
       </p>
     </section>
     <section>
       <h2>¿Qué es un robot seguidor de línea?</h2>
       <ul>
-        <li>Un robot que detecta y sigue una línea trazada en el suelo (generalmente negra sobre fondo blanco o viceversa) usando sensores.</li>
-        <li>Muy utilizado en competencias educativas y como ejemplo introductorio en robótica y control.</li>
+        <li>Un robot móvil autónomo diseñado para detectar y seguir una ruta predefinida, generalmente una línea de color oscuro sobre un fondo claro, utilizando sensores especializados.</li>
+        <li>Es un proyecto ampliamente adoptado en la educación STEM (Ciencia, Tecnología, Ingeniería y Matemáticas), ya que introduce conceptos esenciales de robótica, control y automatización.</li>
       </ul>
     </section>
     <section>
       <h2>Componentes principales</h2>
       <ul>
-        <li><strong>Sensores IR reflectivos:</strong> Detectan la línea contrastando luz reflejada.</li>
-        <li><strong>Motores DC y ruedas:</strong> Permiten el movimiento del robot.</li>
-        <li><strong>Pontes H (L298N, L9110S):</strong> Circuitos que permiten invertir el sentido de giro de los motores.</li>
-        <li><strong>Microcontrolador:</strong> (Arduino UNO, ESP32, etc.) Controla la lógica, lee sensores y activa motores.</li>
-        <li><strong>Chasis:</strong> Soporte físico para montar los componentes.</li>
-        <li><strong>Baterías:</strong> Fuente de alimentación del sistema.</li>
+        <li><strong>Sensores infrarrojos (IR) reflectivos:</strong> Permiten la detección de la línea mediante la medición de la luz reflejada, diferenciando entre superficies claras y oscuras.</li>
+        <li><strong>Motores de corriente continua (DC) y ruedas:</strong> Proveen el movimiento y la tracción necesarios para desplazar el robot a lo largo del recorrido.</li>
+        <li><strong>Pontes H (L298N, L9110S):</strong> Circuitos de control de potencia que habilitan la inversión de giro de los motores y el ajuste de velocidad a través de señales PWM.</li>
+        <li><strong>Microcontrolador:</strong> (Ej. Arduino UNO, ESP32) Actúa como el cerebro del sistema, procesando datos de los sensores y generando las señales de control adecuadas para los motores.</li>
+        <li><strong>Chasis:</strong> Estructura física que soporta y organiza los componentes electrónicos y mecánicos del robot.</li>
+        <li><strong>Baterías:</strong> Proveen la energía eléctrica necesaria para la operación autónoma del sistema.</li>
       </ul>
     </section>
     <section>
-      <h2>Diagrama general</h2>
+      <h2>Diagrama general del sistema</h2>
       <ul>
         <li>
-          <strong>Sensores IR</strong> conectados a las entradas analógicas del microcontrolador.
+          <strong>Sensores IR</strong> conectados a las entradas analógicas del microcontrolador, permitiendo la lectura continua del estado de la línea guía.
         </li>
         <li>
-          <strong>Motores DC</strong> conectados al puente H, y este a las salidas digitales/PWM del microcontrolador.
+          <strong>Motores DC</strong> conectados al puente H, el cual está vinculado a las salidas digitales/PWM del microcontrolador para el control direccional y de velocidad.
         </li>
         <li>
-          <strong>Alimentación</strong> desde baterías recargables.
+          <strong>Alimentación</strong> proporcionada por baterías recargables, garantizando autonomía y portabilidad.
         </li>
       </ul>
       <img src="https://lh7-us.googleusercontent.com/s7O_jYFdyb9_G6VIQqxyO90tpnfCcW3L5sGfk6_muty9IaHBuVRpccL2-MPKXp5j5hI_q1KiMJADWC8Kt0DUw_wIW64QhO677EJUqS1jvDi0Aebcb4f6t8fKoFgt3qRli52clpL_m_llf5jJSPD5zA" alt="Diagrama robot seguidor de línea" style="max-width:100%; border-radius: 7px; margin-top: 12px;">
     </section>
     <section>
-      <h2>¿Para qué sirve este proyecto?</h2>
+      <h2>¿Por qué desarrollar este proyecto?</h2>
       <ul>
-        <li>Aprender principios de robótica, electrónica y programación integrados.</li>
-        <li>Desarrollar habilidades de resolución de problemas y trabajo en equipo.</li>
-        <li>Participar en desafíos y competencias de robótica educativa.</li>
+        <li>Permite la adquisición práctica de conocimientos en robótica, electrónica y programación, integrando diversas disciplinas en un solo desafío.</li>
+        <li>Fomenta el pensamiento lógico, la creatividad y el trabajo colaborativo a través de la resolución de problemas reales.</li>
+        <li>Prepara a los estudiantes para participar en competencias de robótica educativa y los acerca a las tendencias de la industria tecnológica.</li>
       </ul>
     </section>
     <section>
-      <h2>En la próxima clase...</h2>
+      <h2>Próximos pasos</h2>
       <p>
-        ¡Comenzaremos con el montaje del hardware! Prepararemos el chasis, sensores y conexiones básicas.
+        En la siguiente clase abordaremos el montaje inicial del hardware: ensamblado del chasis, disposición de los sensores y primeras conexiones eléctricas.
       </p>
       <a href="class2.html" class="btn">Ir a la clase 2 &rarr;</a>
     </section>

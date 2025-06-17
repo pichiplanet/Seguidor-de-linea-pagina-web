@@ -294,7 +294,6 @@ pre {
 
 /* Prevent scrolling when Bart is visible */
 body.bart-active {
-  overflow: hidden !important;
   touch-action: none !important;
 }
 

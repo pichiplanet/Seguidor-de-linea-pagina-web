@@ -11,20 +11,36 @@ const bartOverlay = document.getElementById('bart-overlay');
 const kneeAudio = document.getElementById('knee-audio');
 let typed = '';
 let lastTypedTime = Date.now();
-let douMode = false;
+let douMode = document.body.classList.contains('dou-mode'); // SYNC WITH CLASS ON LOAD
 let originalTexts = [];
 let bartTyped = "";
 
 // === DOU MODE ===
+function swapDouModeImages() {
+  // Swap class images
+  document.querySelectorAll('img.class-img').forEach(img => {
+    img.src = douMode ? img.getAttribute('data-dou') : img.getAttribute('data-default');
+  });
+  // Swap header background image at the top (the big one)
+  const headerBg = document.querySelector('.header-bg');
+  if (headerBg) {
+    headerBg.src = douMode ? headerBg.getAttribute('data-dou') : headerBg.getAttribute('data-default');
+  }
+}
+
 function toggleDouMode() {
   document.body.classList.toggle('dou-mode');
-  douMode = !douMode;
+  douMode = document.body.classList.contains('dou-mode');
+
+  // Show/hide cube and solo-dou elements
   document.querySelectorAll('.dou-cube-container').forEach(cube => {
     cube.style.display = douMode ? 'block' : 'none';
   });
   document.querySelectorAll('.solo-dou').forEach(el => {
     el.style.display = douMode ? 'block' : 'none';
   });
+
+  // Text swap
   if (douMode) {
     // Save and replace all visible text except dropdown class links/buttons
     originalTexts = [];
@@ -44,6 +60,9 @@ function toggleDouMode() {
       item.element.innerText = item.text;
     });
   }
+
+  // Swap images for dou mode
+  swapDouModeImages();
 }
 
 // === ESENCIA MODE ===
@@ -228,3 +247,13 @@ document.querySelector('header').addEventListener('touchend', function(e) {
 const params = new URLSearchParams(window.location.search);
 if (params.has('dou')) toggleDouMode();
 if (params.has('esencia')) showEsencia();
+
+// === Initial image swap on load for dou mode ===
+swapDouModeImages();
+
+// === Observe dou-mode class changes for external toggles ===
+const douModeObserver = new MutationObserver(() => {
+  douMode = document.body.classList.contains('dou-mode');
+  swapDouModeImages();
+});
+douModeObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });

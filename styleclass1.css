@@ -1,0 +1,198 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans+Condensed:700|Open+Sans:400,400i,700,700i);
+
+:root {
+  --accent-bg: #2f4f4f; 
+  --accent-bg-text: #fff;
+  --secondary-bg: #1e1e2f;
+  --secondary-bg-text: #fff;
+  --normal-bg: #f8f9fa;
+  --normal-bg-text: #000;
+  --normal-separator: #e1e6f3;
+  --link-text: #336699;
+  --link-text-hover: #204060;
+  --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+body {
+  font-family: "Open Sans", Arial, sans-serif;
+  background-color: var(--normal-bg);
+  margin: 0;
+  padding: 0;
+  color: var(--normal-bg-text);
+  position: relative;
+  overflow-x: hidden;
+}
+
+a {
+  color: var(--link-text);
+  text-decoration: none;
+}
+
+a:hover,
+.btn:hover,
+.class-btn:hover {
+  text-decoration: underline;
+  background: #f44336;
+  color: #fff;
+}
+
+nav {
+  background: var(--secondary-bg);
+  padding: 10px 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  text-align: center;
+}
+
+nav .btn {
+  margin: 0 6px;
+  font-size: 1rem;
+}
+
+.class-nav {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  display: inline-block;
+}
+
+.class-nav .btn.active {
+  background: #f44336;
+  color: #fff;
+  pointer-events: none;
+}
+
+.btn, .class-btn {
+  display: inline-block;
+  margin-top: 12px;
+  margin-right: 8px;
+  padding: 10px 20px;
+  background: #1e1e2f;
+  color: #fff;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.2s;
+  border: none;
+  cursor: pointer;
+}
+
+header {
+  background-color: #1e1e2f;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+main {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+section {
+  background-color: #ffffff;
+  margin-bottom: 20px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  position: relative;
+  z-index: 2;
+}
+
+h2, h3 {
+  color: #333;
+}
+
+ul {
+  margin-top: 8px;
+  margin-bottom: 16px;
+}
+
+img {
+  max-width: 100%;
+  border-radius: 7px;
+  margin-top: 12px;
+  display: block;
+}
+
+/* The cover images in the .class-card content */
+.class-card > .content > img.class-img {
+  width: 50%;
+  aspect-ratio: 1.75;
+  object-fit: cover;
+  margin-top: 12px;
+  border-radius: 7px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: block;
+}
+
+/* Video cover matches .class-img sizing */
+.fake-video-cover,
+.yt-iframe-wrapper {
+  width: 50%;
+  aspect-ratio: 1.75;
+  max-width: none;
+  margin-top: 12px;
+  border-radius: 7px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fake-video-cover img {
+  width: 50;
+  height: 5%;
+  object-fit: cover;
+  display: block;
+  border-radius: 0;
+}
+
+.fake-video-cover .play-btn {
+  position: absolute;
+  width: 12px;
+  height: 7px;
+  background: rgba(0,0,0,0.5);
+  border-radius: 50%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.fake-video-cover .play-btn svg {
+  width: 12px;
+  height: 7px;
+  fill: #fff;
+  filter: drop-shadow(0 2px 4px #000b);
+}
+.yt-iframe-wrapper {
+  display: none;
+}
+.yt-iframe-wrapper.active {
+  display: flex;
+}
+
+footer {
+  background-color: #1e1e2f;
+  color: white;
+  text-align: center;
+  padding: 18px 10px 10px 10px;
+  margin-top: 32px;
+}
+
+footer .btn {
+  margin: 0 8px 0 0;
+  font-size: 1rem;
+}

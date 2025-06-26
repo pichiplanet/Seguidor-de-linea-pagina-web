@@ -193,6 +193,9 @@ pre {
   overflow-x: auto;
   font-family: monospace;
 }
+.codeblock{
+  padding-left: 20px;
+}
 
 .btn,
 .class-btn {

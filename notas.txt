@@ -1,1 +1,4 @@
+articulos y cosas asi
+---------------------
+
 https://www.supotronix.com/2025/03/how-i-can-build-esp32-based-line.html#google_vignette

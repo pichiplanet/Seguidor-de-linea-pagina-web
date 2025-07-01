@@ -38,16 +38,20 @@ a:hover {
 }
 
 nav {
+  display: flex;
+  align-items: center;
   background: var(--secondary-bg);
-  padding: 10px 0;
+  padding: 10px;
   position: sticky;
   top: 0;
   z-index: 10;
+  user-select: none;
 }
 
 nav .btn {
   margin: 0 6px;
   font-size: 1rem;
+  cursor: pointer;
 }
 
 .dropdown {
@@ -95,7 +99,8 @@ nav .btn {
 }
 
 .btn:hover,
-.class-btn:hover {
+.class-btn:hover,
+.btn.active {
   background: #f44336;
   color: #fff;
   animation: bounce 0.4s;
@@ -109,6 +114,7 @@ header {
   text-align: center;
   position: relative;
   z-index: 2;
+  user-select: none;
 }
 
 .header-bg {
@@ -157,7 +163,8 @@ main {
   justify-content: flex-end;
 }
 
-.class-card > .content > img {
+.class-card > .content > img,
+.class-card > .content > iframe {
   width: 50%;
   aspect-ratio: 1.75;
   object-fit: cover;
@@ -193,7 +200,7 @@ pre {
   overflow-x: auto;
   font-family: monospace;
 }
-.codeblock{
+.codeblock {
   padding-left: 20px;
 }
 
@@ -219,164 +226,9 @@ pre {
   color: #fff;
 }
 
-/* todo el brainrot aca abajo */
-
-@keyframes fadeOutOverlay {
-  from {
-    opacity: 1;
-  }
-
-  to {
-    opacity: 0;
-  }
-}
-
-#abbey-overlay.fading {
-  animation: fadeOutOverlay 3s forwards;
-}
-
-@keyframes swipeOutUp {
-  0% {
-    transform: translateY(0);
-  }
-
-  100% {
-    transform: translateY(-120vh);
-    opacity: 0;
-  }
-}
-
-@keyframes swipeOutDown {
-  0% {
-    transform: translateY(0);
-  }
-
-  100% {
-    transform: translateY(120vh);
-    opacity: 0;
-  }
-}
-
-@keyframes swipeOutLeft {
-  0% {
-    transform: translateX(0);
-  }
-
-  100% {
-    transform: translateX(-120vw);
-    opacity: 0;
-  }
-}
-
-@keyframes swipeOutRight {
-  0% {
-    transform: translateX(0);
-  }
-
-  100% {
-    transform: translateX(120vw);
-    opacity: 0;
-  }
-}
-
-#bart-overlay.swipe-out-up {
-  animation: swipeOutUp 0.5s cubic-bezier(0.45, 1.5, 0.6, 1) forwards;
-}
-
-#bart-overlay.swipe-out-down {
-  animation: swipeOutDown 0.5s cubic-bezier(0.45, 1.5, 0.6, 1) forwards;
-}
-
-#bart-overlay.swipe-out-left {
-  animation: swipeOutLeft 0.5s cubic-bezier(0.45, 1.5, 0.6, 1) forwards;
-}
-
-#bart-overlay.swipe-out-right {
-  animation: swipeOutRight 0.5s cubic-bezier(0.45, 1.5, 0.6, 1) forwards;
-}
-
-/* Prevent scrolling when Bart is visible */
-body.bart-active {
-  touch-action: none !important;
-}
-
-@keyframes violent-bounce-y {
-  0% {
-    transform: translateY(0);
-  }
-
-  10% {
-    transform: translateY(-40px);
-  }
-
-  20% {
-    transform: translateY(0);
-  }
-
-  30% {
-    transform: translateY(-30px);
-  }
-
-  40% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-50px);
-  }
-
-  60% {
-    transform: translateY(0);
-  }
-
-  70% {
-    transform: translateY(-40px);
-  }
-
-  80% {
-    transform: translateY(0);
-  }
-
-  90% {
-    transform: translateY(-30px);
-  }
-
-  100% {
-    transform: translateY(0);
-  }
-}
-
-/* DOU MODE BUTTON FOR MOBILE */
-#dou-toggle,
-#esencia-toggle {
-  position: fixed;
-  z-index: 9999;
-  display: none;
-  border-radius: 50%;
-  width: 56px;
-  height: 56px;
-  font-size: 1.2em;
-  border: none;
-  box-shadow: 0 2px 8px rgba(44, 44, 44, 0.22);
-  background: #f44336;
-  color: #fff;
-  right: 24px;
-  bottom: 24px;
-  cursor: pointer;
-  opacity: 0.93;
-}
-
-#esencia-toggle {
-  right: 24px;
-  bottom: 90px;
-  background: #1e1e2f;
-}
-
-@media (max-width: 800px) {
-  #dou-toggle,
-  #esencia-toggle {
-    display: block;
-  }
+.btn:has(img) {
+  padding: 0;
+  line-height: 0;
 }
 
 footer {
@@ -391,149 +243,4 @@ footer {
 footer .btn {
   margin: 0 8px 0 0;
   font-size: 1rem;
-}
-
-footer a.solo-dou {
-  display: none;
-}
-
-body.dou-mode footer a.solo-dou {
-  display: inline-block;
-}
-
-/* Modo Dou */
-body.dou-mode {
-  background-image: url("https://imgproxy.domestika.org/unsafe/s:1200:630/rs:fill/ex:true/el:true/plain/src://blog-post-open-graph-covers/000/013/103/13103-original.jpg?1713347781");
-  background-repeat: repeat;
-  background-size: 150px;
-  color: #000;
-}
-
-body.dou-mode header {
-  background-color: rgba(255, 255, 255, 0.85);
-  color: #000;
-}
-
-body.dou-mode section {
-  background-color: rgba(255, 255, 255, 0.95);
-  border: 2px dashed #f44336;
-}
-
-body.dou-mode h2,
-body.dou-mode h3 {
-  color: #d32f2f;
-}
-
-/* Cubo Homero */
-.dou-cube-container {
-  perspective: 800px;
-  width: 150px;
-  height: 150px;
-  margin: 20px auto 10px auto;
-  position: relative;
-  z-index: 5;
-  display: none;
-  animation: violent-bounce-y 0.8s infinite cubic-bezier(0.23, 1.22, 0.61, 0.94);
-}
-
-.dou-cube {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  transform-style: preserve-3d;
-  animation: rotateCube 1500ms infinite linear;
-}
-
-.face {
-  position: absolute;
-  width: 150px;
-  height: 150px;
-  background-size: cover;
-  background-position: center;
-  opacity: 0.95;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.front {
-  transform: rotateY(0deg) translateZ(75px);
-}
-
-.back {
-  transform: rotateY(180deg) translateZ(75px);
-}
-
-.right {
-  transform: rotateY(90deg) translateZ(75px);
-}
-
-.left {
-  transform: rotateY(-90deg) translateZ(75px);
-}
-
-.top {
-  transform: rotateX(90deg) translateZ(75px);
-}
-
-.bottom {
-  transform: rotateX(-90deg) translateZ(75px);
-}
-
-@keyframes rotateCube {
-  0% {
-    transform: rotateX(0deg) rotateY(0deg);
-  }
-
-  100% {
-    transform: rotateX(360deg) rotateY(360deg);
-  }
-}
-
-/* Pantalla completa para ESENCIA */
-#esencia-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.8);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  cursor: pointer;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-
-#esencia-overlay.active {
-  opacity: 1;
-  pointer-events: all;
-}
-
-#esencia-overlay img {
-  max-width: 90vw;
-  max-height: 80vh;
-  object-fit: contain;
-  border-radius: 10px;
-  box-shadow: 0 0 30px rgba(255, 255, 255, 0.7);
-  margin-bottom: 20px;
-}
-
-#esencia-overlay .caption {
-  color: white;
-  font-size: 2.5rem;
-  font-weight: bold;
-  font-family: "Arial Black", Arial, sans-serif;
-  text-shadow: 0 0 8px #000;
-  user-select: none;
-}
-
-body.esencia-active main,
-body.esencia-active header,
-body.esencia-active footer {
-  filter: blur(4px) brightness(0.5);
-  pointer-events: none;
-  user-select: none;
 }

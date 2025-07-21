@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clase 4: Montaje inicial del hardware</title>
+    <link rel="icon" type="image/png" href="assets/logo/white.png" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <nav>
+      <a href="index.html" class="btn">
+        <img src="assets/logo/white.png" width="50" />
+      </a>
+      <div class="class-nav" style="display: inline-block">
+        <a href="class1.html" class="btn">Clase 1</a>
+        <a href="class2.html" class="btn">Clase 2</a>
+        <a href="class3.html" class="btn">Clase 3</a>
+        <a href="class4.html" class="btn active">Clase 4</a>
+        <a href="class5.html" class="btn">Clase 5</a>
+        <a href="class6.html" class="btn">Clase 6</a>
+        <a href="class7.html" class="btn">Clase 7</a>
+      </div>
+    </nav>
+    <header>
+      <img class="header-bg" src="assets/bg/escuela.jpg" />
+      <h1>Clase 4: Control básico de motores</h1>
+      <div>Curso: Robot Seguidor de Línea</div>
+    </header>
+    <main>
+      <section class="class-card">
+        <h2 class="title">Objetivo de la clase</h2>
+        <div class="content">
+          <img class="class-img" src="assets/cards/clase4.png" />
+          <div>
+            <p>
+              Preparar la base de código que controla los motores por PWM,
+              para facilitar la programación del futuro algoritmo de seguimiento.
+            </p>
+          </div>
+        </div>
+      </section>
+      <section class="class-card">
+        <h2 class="title">Video tutorial</h2>
+        <div class="content">
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/-2xuO8JBepM?si=U5q6cJ6y37M42hEq"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+          ></iframe>
+          <div>placeholder</div>
+        </div>
+      </section>
+      <section class="class-card">
+        <h2 class="title">Girar los motores</h2>
+        <div class="content">
+          <div style="width: 100%">
+            <p>
+              Continuando con la programación del microcontrolador hecha en la clase pasada, agregaremos en el setup unas líneas para probar que los
+              motores giren y que lo hagan en el mismo sentido.
+            </p>
+            <p>
+              El PIN_MOTOR_1A controla uno de los pines del motor 1 (a través del puente H) y el PIN_MOTOR_1B controla el otro.
+              Para que el motor 1 gire en una dirección se asigna un estado alto en uno de los pines y un estado bajo en el otro.
+            </p>
+            <p>
+              También lo hacemos para el motor 2, así comprobamos si ambos motores giran en la misma dirección con la conexión actual.
+            </p>
+            <pre class="codeblock"><code>
+...
+
+void setup(){
+	...
+
+	// Hacemos girar el motor 1
+	digitalWrite(PIN_MOTOR_1A, HIGH);
+	digitalWrite(PIN_MOTOR_1B, LOW);
+
+	// Hacemos lo mismo con el motor 2
+	digitalWrite(PIN_MOTOR_2A, HIGH);
+	digitalWrite(PIN_MOTOR_2B, LOW);
+}
+
+          </code></pre>
+          <p>
+            No podemos olvidarnos de asignarle un valor al PWM, lo cual configura la velocidad, ya que si no es configurada, los motores probablemente no giren.
+          </p>
+            <pre class="codeblock"><code>
+...
+
+void setup(){
+	...
+
+	// Hacemos girar el motor 1
+	digitalWrite(PIN_MOTOR_1A, HIGH);
+	digitalWrite(PIN_MOTOR_1B, LOW);
+
+	// Hacemos lo mismo con el motor 2
+	digitalWrite(PIN_MOTOR_2A, HIGH);
+	digitalWrite(PIN_MOTOR_2B, LOW);
+
+	// Configuramos la velocidad (255 es el maximo)
+	analogWrite(PIN_PWM_MOTOR_1, 255);
+	analogWrite(PIN_PWM_MOTOR_2, 255);
+}
+          </code></pre>
+          <p>
+            Si ahora probamos el código y lo subimos al controlador, veremos como los dos motores giran continuamente, si giran en direcciones opuestas, es recomendable intercambiar los pines A y B de uno de los motores, ya sea desde la programación o físicamente.
+          </p>
+          </div>
+        </div>
+      </section>
+      <section class="class-card">
+        <h2 class="title">Controlar la velocidad del motor</h2>
+        <div class="content">
+          <div style="width: 100%">
+            <p>
+              placeholder
+            </p>
+            <pre class="codeblock"><code>
+...
+placeholder
+
+          </code></pre>
+
+          </div>
+        </div>
+      </section>
+      <section class="class-card">
+        <h2 class="title">Funciones de movimiento</h2>
+        <div class="content">
+          <div style="width: 100%">
+            <p>
+              placeholder
+            </p>
+            <pre class="codeblock"><code>
+...
+placeholder
+
+          </code></pre>
+
+          </div>
+        </div>
+      </section>
+      <section class="class-card">
+        <h2 class="title">Próximos pasos</h2>
+        <div class="content">
+          <img class="class-img" src="assets/cards/placeholder.png" />
+          <div>
+            <p>
+              En la próxima clase explicaremos y programaremos el algoritmo básico de seguimiento que utilizaremos para seguir la linea.
+            </p>
+            <a class="link" href="class5.html">Ir a la clase 5 &rarr;</a>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <a href="index.html" class="btn">Volver al inicio</a>
+      <a href="mailto:juanbustos@eetp460.com" class="btn">Contacto</a>
+      <a
+        href="https://github.com/pichiplanet/Seguidor-de-linea-pagina-web/issues/new?labels=bug"
+        class="btn"
+        target="_blank"
+        rel="noopener"
+        >Reportar Bug</a
+      >
+    </footer>
+  </body>
+</html>

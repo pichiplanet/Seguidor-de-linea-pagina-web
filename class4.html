@@ -120,14 +120,28 @@ void setup(){
         <div class="content">
           <div style="width: 100%">
             <p>
-              placeholder
+							Como aclaramos en el código previo, 255 es el máximo valor analógico que se puede dar desde el Arduino, asi que lo definiremos como tal.
+						</p>
+						<p>
+              Podemos cambiar la velocidad de cada motor individualmente, si uno de los motores gira mas rápido que el otro, el robot girará.
+							Teniendo esto en cuenta, si asumimos que el motor 1 es el izquierdo y el 2 es el derecho, si el motor 2 gira a la mitad de la velocidad máxima, el robot girará a la derecha.
             </p>
-            <pre class="codeblock"><code>
+						<pre class="codeblock"><code>
 ...
-placeholder
 
+#define VELOCIDAD_MAXIMA 255
+
+void setup(){
+	...
+
+	// Configuramos la velocidad
+	analogWrite(PIN_PWM_MOTOR_1, VELOCIDAD_MAXIMA);
+	analogWrite(PIN_PWM_MOTOR_2, VELOCIDAD_MAXIMA / 2);
+}
           </code></pre>
-
+					<p>
+						Si probamos el código y en efecto el motor 1 es el izquierdo y el motor 2 el derecho, deberiamos ver como el robot se pone a girar en circulos en el sentido de las agujas del reloj.
+					</p>
           </div>
         </div>
       </section>
@@ -136,21 +150,155 @@ placeholder
         <div class="content">
           <div style="width: 100%">
             <p>
-              placeholder
+              Ahora que sabemos como hacer girar al robot, podemos crear nuestras propias funciones que simplifiquen la tarea de doblar para un lado, para el otro o seguir recto. 
             </p>
+						<p>
+							Para que el auto gire más rápido podemos apagar uno de los motores en vez de reducir su velocidad.
+						</p>
             <pre class="codeblock"><code>
 ...
-placeholder
 
+#define VELOCIDAD_MAXIMA 255
+
+void girarIzquierda(){
+	// Giramos mas el motor derecho que el izquierdo (M2 = derecho)
+	analogWrite(PIN_PWM_MOTOR_1, 0);
+	analogWrite(PIN_PWM_MOTOR_2, VELOCIDAD_MAXIMA);
+}
+
+void girarDerecha(){
+	// Giramos mas el motor izquierdo que el derecho (M1 = izquierdo)
+	analogWrite(PIN_PWM_MOTOR_1, VELOCIDAD_MAXIMA);
+	analogWrite(PIN_PWM_MOTOR_2, 0);
+}
+
+void seguirRecto(){
+	// Ambos giran lo mismo
+	analogWrite(PIN_PWM_MOTOR_1, VELOCIDAD_MAXIMA);
+	analogWrite(PIN_PWM_MOTOR_2, VELOCIDAD_MAXIMA);
+}
           </code></pre>
+					<p>
+						Estas funciones las podemos probar cambiando las dos lineas que habíamos colocado en la función setup().
+					</p>
+					<pre class="codeblock"><code>
+...
 
+void setup(){
+	...
+
+	// Configuramos la velocidad
+	girarIzquierda();
+}
+          </code></pre>
+					<p>
+						Por supuesto que la velocidad de giro de los motores debe ser configurada para que el robot no se salga de la pista, pero eso lo haremos más tarde cuando tengamos el algoritmo de control.
+					</p>
+          </div>
+        </div>
+      </section>
+			<section class="class-card">
+        <h2 class="title">Código completo de esta clase</h2>
+        <div class="content">
+          <div style="width: 100%">
+            <pre class="codeblock"><code>
+// CODIGO DE TUTORIAL SEGUIDOR DE LINEA PARA LA EETP 460: CLASE 4
+
+// Definicion de pines
+// Sensores
+#define PIN_SENSOR_1 14
+#define PIN_SENSOR_2 15
+#define PIN_SENSOR_3 16
+#define PIN_SENSOR_4 17
+#define PIN_SENSOR_5 18
+
+// Motores
+// Dirección de la corriente
+#define PIN_MOTOR_1A 12
+#define PIN_MOTOR_1B 11
+#define PIN_MOTOR_2A 10
+#define PIN_MOTOR_2B 9
+
+// Velocidad
+#define PIN_PWM_MOTOR_1 6
+#define PIN_PWM_MOTOR_2 5
+
+#define VELOCIDAD_MAXIMA 255
+
+void girarIzquierda(){
+	// Giramos mas el motor derecho que el izquierdo (M2 = derecho)
+	analogWrite(PIN_PWM_MOTOR_1, 0);
+	analogWrite(PIN_PWM_MOTOR_2, VELOCIDAD_MAXIMA);
+}
+
+void girarDerecha(){
+	// Giramos mas el motor izquierdo que el derecho (M1 = izquierdo)
+	analogWrite(PIN_PWM_MOTOR_1, VELOCIDAD_MAXIMA);
+	analogWrite(PIN_PWM_MOTOR_2, 0);
+}
+
+void seguirRecto(){
+	// Ambos giran lo mismo
+	analogWrite(PIN_PWM_MOTOR_1, VELOCIDAD_MAXIMA);
+	analogWrite(PIN_PWM_MOTOR_2, VELOCIDAD_MAXIMA);
+}
+
+void setup(){
+	// Sensores (entrada)
+	pinMode(PIN_SENSOR_1, INPUT);
+	pinMode(PIN_SENSOR_2, INPUT);
+	pinMode(PIN_SENSOR_3, INPUT);
+	pinMode(PIN_SENSOR_4, INPUT);
+	pinMode(PIN_SENSOR_5, INPUT);
+
+	// Motores (salida)
+	pinMode(PIN_MOTOR_1A, OUTPUT);
+	pinMode(PIN_MOTOR_1B, OUTPUT);
+	pinMode(PIN_MOTOR_2A, OUTPUT);
+	pinMode(PIN_MOTOR_2B, OUTPUT);
+
+	// Velocidad de los motores
+	pinMode(PIN_PWM_MOTOR_1 OUTPUT);
+	pinMode(PIN_PWM_MOTOR_2, OUTPUT);
+
+	// Preparamos el puerto serie para una velocidad que podamos leer
+	Serial.begin(115200);
+
+	// Hacemos girar el motor 1
+	digitalWrite(PIN_MOTOR_1A, HIGH);
+	digitalWrite(PIN_MOTOR_1B, LOW);
+
+	// Hacemos lo mismo con el motor 2
+	digitalWrite(PIN_MOTOR_2A, HIGH);
+	digitalWrite(PIN_MOTOR_2B, LOW);
+
+	// Configuramos la velocidad
+	girarIzquierda();
+}
+
+void loop(){
+	// Lectura de sensores
+	bool sensor_1 = digitalRead(PIN_SENSOR_1);
+	bool sensor_2 = digitalRead(PIN_SENSOR_2);
+	bool sensor_3 = digitalRead(PIN_SENSOR_3);
+	bool sensor_4 = digitalRead(PIN_SENSOR_4);
+	bool sensor_5 = digitalRead(PIN_SENSOR_5);
+
+	// Escritura en el puerto serie
+	Serial.print(sensor_1);
+	Serial.print(sensor_2);
+	Serial.print(sensor_3);
+	Serial.print(sensor_4);
+	Serial.println(sensor_5);
+}
+          </code></pre>
           </div>
         </div>
       </section>
       <section class="class-card">
         <h2 class="title">Próximos pasos</h2>
         <div class="content">
-          <img class="class-img" src="assets/cards/placeholder.png" />
+          <img class="class-img" src="assets/cards/getout.avif"/>
           <div>
             <p>
               En la próxima clase explicaremos y programaremos el algoritmo básico de seguimiento que utilizaremos para seguir la linea.

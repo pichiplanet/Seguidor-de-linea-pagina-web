@@ -33,7 +33,7 @@
       <section class="class-card">
         <h2 class="title">Objetivo de la clase</h2>
         <div class="content">
-          <img class="class-img" src="assets/cards/brain.png" />
+          <img class="class-img" src="assets/cards/clase5.jpg" />
           <div>
             Implementar un algoritmo simple de control basado en los valores de los sensores para que el robot pueda seguir una línea negra sobre fondo blanco.
           </div>
@@ -65,11 +65,12 @@
               Usaremos los valores de los sensores para tomar decisiones sobre hacia qué dirección girar. Por ejemplo:
             </p>
             <ul>
-              <li><strong>00010:</strong> centrado en la línea → avanzar recto</li>
-              <li><strong>00110:</strong> ligeramente a la izquierda → girar a la izquierda</li>
-              <li><strong>01100:</strong> más a la izquierda → girar más</li>
-              <li><strong>10000:</strong> completamente a la izquierda → giro fuerte</li>
-              <li><strong>00000:</strong> línea perdida → detener o buscar</li>
+              <li><strong>00100:</strong> centrado en la línea → avanzar recto</li>
+              <li><strong>00010:</strong> ligeramente a la derecha → girar a la derecha</li>
+              <li><strong>00001:</strong> completamente a la derecha → giro fuerte a la derecha</li>
+              <li><strong>01000:</strong> ligeramente a la izquierda → girar a la izquierda</li>
+              <li><strong>10000:</strong> completamente a la izquierda → giro fuerte a la izquierda</li>
+              <li><strong>00000:</strong> línea perdida o entre medio de los sensores → avanzar recto</li>
             </ul>
             <p>Esto se implementa en el loop utilizando condicionales.</p>
           </div>
@@ -77,90 +78,62 @@
       </section>
 
       <section class="class-card">
-        <h2 class="title">Código ejemplo</h2>
+        <h2 class="title">Implementación</h2>
         <div class="content">
           <div style="width: 100%">
 
             <p>
-              Primero leemos el estado de los sensores conectados a los pines digitales. Recordemos que el sensor devolverá <code>0</code> si ve negro (línea) y <code>1</code> si ve blanco (fondo).
+              Primero leemos el estado de los sensores conectados a los pines digitales. Recordemos que el sensor devolverá <code>0</code> si ve negro (línea) y <code>1</code> si ve blanco (fondo). (Esto ya lo hicimos en una clase anterior)
             </p>
             <pre class="codeblock"><code>
-// Lectura de sensores infrarrojos
-bool s1 = digitalRead(PIN_SENSOR_1);  // Sensor más a la izquierda
-bool s2 = digitalRead(PIN_SENSOR_2);
-bool s3 = digitalRead(PIN_SENSOR_3);  // Sensor central
-bool s4 = digitalRead(PIN_SENSOR_4);
-bool s5 = digitalRead(PIN_SENSOR_5);  // Sensor más a la derecha
+...
+
+void loop(){
+	// Lectura de sensores
+	bool sensor_1 = digitalRead(PIN_SENSOR_1); // Sensor mas izquierdo
+	bool sensor_2 = digitalRead(PIN_SENSOR_2);
+	bool sensor_3 = digitalRead(PIN_SENSOR_3); // Sensor central
+	bool sensor_4 = digitalRead(PIN_SENSOR_4);
+	bool sensor_5 = digitalRead(PIN_SENSOR_5); // Sensor mas derecho
+
+	...
+}
             </code></pre>
 
             <p>
-              Luego usamos una estructura condicional para decidir qué acción tomar dependiendo de qué sensor detecta la línea negra. La prioridad está dada por qué sensor esté más cerca del centro:
+              Luego usamos una estructura condicional para decidir qué acción tomar dependiendo de qué sensor detecta la línea. La prioridad está dada por qué sensor esté más cerca del centro:
             </p>
             <ul>
-              <li><code>s3</code>: línea centrada → avanzar</li>
-              <li><code>s2</code>: línea un poco a la izquierda → giro leve a la izquierda</li>
-              <li><code>s1</code>: línea muy a la izquierda → giro fuerte a la izquierda</li>
-              <li><code>s4</code>: línea un poco a la derecha → giro leve a la derecha</li>
-              <li><code>s5</code>: línea muy a la derecha → giro fuerte a la derecha</li>
-              <li>Ningún sensor detecta línea → detener</li>
+              <li><code>sensor_3</code>: línea centrada → avanzar</li>
+              <li><code>sensor_2</code>: línea un poco a la izquierda → giro leve a la izquierda</li>
+              <li><code>sensor_1</code>: línea muy a la izquierda → giro fuerte a la izquierda</li>
+              <li><code>sensor_4</code>: línea un poco a la derecha → giro leve a la derecha</li>
+              <li><code>sensor_5</code>: línea muy a la derecha → giro fuerte a la derecha</li>
+              <li>Ningún sensor detecta línea → avanzar</li>
             </ul>
 
-            <pre class="codeblock"><code>
-// Algoritmo de seguimiento de línea
-if (s3 == 0) {
-  avanzar();  // Sensor central detecta línea
-} else if (s2 == 0) {
-  girarIzquierdaLeve();
-} else if (s1 == 0) {
-  girarIzquierdaFuerte();
-} else if (s4 == 0) {
-  girarDerechaLeve();
-} else if (s5 == 0) {
-  girarDerechaFuerte();
-} else {
-  detener();  // Ningún sensor detecta la línea
-}
-            </code></pre>
-
-            <p>
-              A continuación definimos las funciones utilizadas para el movimiento del robot. Cada función envía señales a los pines del puente H y al PWM para controlar la dirección y velocidad de los motores.
-            </p>
+						<p>
+							La razón por la que hacemos que el robot avance cuando no detecta línea es porque hay casos en los que la linea se encuentra entre medio de dos sensores y ninguno de estos lo detecta.
+						</p>
 
             <pre class="codeblock"><code>
-// Funciones de movimiento
+void loop(){
+	...
 
-void avanzar() {
-  digitalWrite(PIN_MOTOR_1A, HIGH);
-  digitalWrite(PIN_MOTOR_1B, LOW);
-  digitalWrite(PIN_MOTOR_2A, HIGH);
-  digitalWrite(PIN_MOTOR_2B, LOW);
-  analogWrite(PIN_PWM_MOTOR_1, 200);
-  analogWrite(PIN_PWM_MOTOR_2, 200);
-}
-
-void girarIzquierdaLeve() {
-  analogWrite(PIN_PWM_MOTOR_1, 150);
-  analogWrite(PIN_PWM_MOTOR_2, 200);
-}
-
-void girarIzquierdaFuerte() {
-  analogWrite(PIN_PWM_MOTOR_1, 100);
-  analogWrite(PIN_PWM_MOTOR_2, 200);
-}
-
-void girarDerechaLeve() {
-  analogWrite(PIN_PWM_MOTOR_1, 200);
-  analogWrite(PIN_PWM_MOTOR_2, 150);
-}
-
-void girarDerechaFuerte() {
-  analogWrite(PIN_PWM_MOTOR_1, 200);
-  analogWrite(PIN_PWM_MOTOR_2, 100);
-}
-
-void detener() {
-  analogWrite(PIN_PWM_MOTOR_1, 0);
-  analogWrite(PIN_PWM_MOTOR_2, 0);
+	// Algoritmo de seguimiento de linea
+	if (sensor_3 == 0) {
+		avanzar(); // Sensor central detecta linea
+	} else if (sensor_2 == 0) {
+		girarIzquierdaLeve();
+	} else if (sensor_1 == 0) {
+		girarIzquierdaFuerte();
+	} else if (sensor_4 == 0) {
+		girarDerechaLeve();
+	} else if (sensor_5 == 0) {
+		girarDerechaFuerte();
+	} else {
+		avanzar();  // Ningún sensor detecta la línea
+	}
 }
             </code></pre>
 
@@ -172,13 +145,140 @@ void detener() {
         </div>
       </section>
 
+			<section class="class-card">
+        <h2 class="title">Código completo de esta clase</h2>
+        <div class="content">
+          <div style="width: 100%">
+            <pre class="codeblock"><code>
+// CODIGO DE TUTORIAL SEGUIDOR DE LINEA PARA LA EETP 460: CLASE 5
+
+// Definicion de pines
+// Sensores
+#define PIN_SENSOR_1 14
+#define PIN_SENSOR_2 15
+#define PIN_SENSOR_3 16
+#define PIN_SENSOR_4 17
+#define PIN_SENSOR_5 18
+
+// Motores
+// Dirección de la corriente
+#define PIN_MOTOR_1A 12
+#define PIN_MOTOR_1B 11
+#define PIN_MOTOR_2A 10
+#define PIN_MOTOR_2B 9
+
+// Velocidad
+#define PIN_PWM_MOTOR_1 6
+#define PIN_PWM_MOTOR_2 5
+
+#define VELOCIDAD_MAXIMA 255
+
+// funciones de movimiento
+void girarIzquierdaLeve(){
+	// Giramos mas el motor derecho que el izquierdo (M2 = derecho)
+	analogWrite(PIN_PWM_MOTOR_1, VELOCIDAD_MAXIMA / 2);
+	analogWrite(PIN_PWM_MOTOR_2, VELOCIDAD_MAXIMA);
+}
+
+void girarIzquierdaFuerte(){
+	// Giramos el motor derecho
+	analogWrite(PIN_PWM_MOTOR_1, 0);
+	analogWrite(PIN_PWM_MOTOR_2, VELOCIDAD_MAXIMA);
+}
+
+void girarDerechaLeve(){
+	// Giramos mas el motor izquierdo que el derecho (M1 = izquierdo)
+	analogWrite(PIN_PWM_MOTOR_1, VELOCIDAD_MAXIMA);
+	analogWrite(PIN_PWM_MOTOR_2, VELOCIDAD_MAXIMA / 2);
+}
+
+void girarDerechaFuerte(){
+	// Giramos el motor izquierdo
+	analogWrite(PIN_PWM_MOTOR_1, VELOCIDAD_MAXIMA);
+	analogWrite(PIN_PWM_MOTOR_2, 0);
+}
+
+void avanzar(){
+	// Ambos giran lo mismo
+	analogWrite(PIN_PWM_MOTOR_1, VELOCIDAD_MAXIMA);
+	analogWrite(PIN_PWM_MOTOR_2, VELOCIDAD_MAXIMA);
+}
+
+void setup(){
+	// Sensores (entrada)
+	pinMode(PIN_SENSOR_1, INPUT);
+	pinMode(PIN_SENSOR_2, INPUT);
+	pinMode(PIN_SENSOR_3, INPUT);
+	pinMode(PIN_SENSOR_4, INPUT);
+	pinMode(PIN_SENSOR_5, INPUT);
+
+	// Motores (salida)
+	pinMode(PIN_MOTOR_1A, OUTPUT);
+	pinMode(PIN_MOTOR_1B, OUTPUT);
+	pinMode(PIN_MOTOR_2A, OUTPUT);
+	pinMode(PIN_MOTOR_2B, OUTPUT);
+
+	// Velocidad de los motores
+	pinMode(PIN_PWM_MOTOR_1 OUTPUT);
+	pinMode(PIN_PWM_MOTOR_2, OUTPUT);
+
+	// Preparamos el puerto serie para una velocidad que podamos leer
+	Serial.begin(115200);
+
+	// Hacemos girar el motor 1
+	digitalWrite(PIN_MOTOR_1A, HIGH);
+	digitalWrite(PIN_MOTOR_1B, LOW);
+
+	// Hacemos lo mismo con el motor 2
+	digitalWrite(PIN_MOTOR_2A, HIGH);
+	digitalWrite(PIN_MOTOR_2B, LOW);
+
+	// Configuramos la velocidad
+	girarIzquierdaLeve();
+}
+
+void loop(){
+	// Lectura de sensores
+	bool sensor_1 = digitalRead(PIN_SENSOR_1);
+	bool sensor_2 = digitalRead(PIN_SENSOR_2);
+	bool sensor_3 = digitalRead(PIN_SENSOR_3);
+	bool sensor_4 = digitalRead(PIN_SENSOR_4);
+	bool sensor_5 = digitalRead(PIN_SENSOR_5);
+
+	// Escritura en el puerto serie
+	Serial.print(sensor_1);
+	Serial.print(sensor_2);
+	Serial.print(sensor_3);
+	Serial.print(sensor_4);
+	Serial.println(sensor_5);
+
+	// Algoritmo de seguimiento de linea
+	if (sensor_3 == 0) {
+		avanzar(); // Sensor central detecta linea
+	} else if (sensor_2 == 0) {
+		girarIzquierdaLeve();
+	} else if (sensor_1 == 0) {
+		girarIzquierdaFuerte();
+	} else if (sensor_4 == 0) {
+		girarDerechaLeve();
+	} else if (sensor_5 == 0) {
+		girarDerechaFuerte();
+	} else {
+		avanzar();  // Ningún sensor detecta la línea
+	}
+}
+          </code></pre>
+          </div>
+        </div>
+      </section>
+
       <section class="class-card">
         <h2 class="title">Próximos pasos</h2>
         <div class="content">
-          <img class="class-img" src="assets/cards/placeholder.png" />
+          <img class="class-img" src="assets/cards/getout.avif" />
           <div>
             <p>
-              En la siguiente clase analizaremos cómo ajustar la sensibilidad del robot y qué mejoras se pueden hacer al algoritmo para curvas o bifurcaciones.
+              En la siguiente clase analizaremos cómo ajustar la sensibilidad del robot y qué mejoras se pueden hacer al algoritmo para curvas.
             </p>
             <a class="link" href="class6.html">Ir a la clase 6 &rarr;</a>
           </div>

@@ -31,7 +31,7 @@
       <section class="class-card">
         <h2 class="title">Objetivo de la clase</h2>
         <div class="content">
-          <img class="class-img" src="assets/cards/clase4.png" />
+          <img class="full-size" src="assets/cards/motor.webp" />
           <div>
             <p>
               Preparar la base de código que controla los motores por PWM,
@@ -160,19 +160,32 @@ void setup(){
 
 #define VELOCIDAD_MAXIMA 255
 
-void girarIzquierda(){
+// funciones de movimiento
+void girarIzquierdaLeve(){
 	// Giramos mas el motor derecho que el izquierdo (M2 = derecho)
+	analogWrite(PIN_PWM_MOTOR_1, VELOCIDAD_MAXIMA / 2);
+	analogWrite(PIN_PWM_MOTOR_2, VELOCIDAD_MAXIMA);
+}
+
+void girarIzquierdaFuerte(){
+	// Giramos el motor derecho
 	analogWrite(PIN_PWM_MOTOR_1, 0);
 	analogWrite(PIN_PWM_MOTOR_2, VELOCIDAD_MAXIMA);
 }
 
-void girarDerecha(){
+void girarDerechaLeve(){
 	// Giramos mas el motor izquierdo que el derecho (M1 = izquierdo)
+	analogWrite(PIN_PWM_MOTOR_1, VELOCIDAD_MAXIMA);
+	analogWrite(PIN_PWM_MOTOR_2, VELOCIDAD_MAXIMA / 2);
+}
+
+void girarDerechaFuerte(){
+	// Giramos el motor izquierdo
 	analogWrite(PIN_PWM_MOTOR_1, VELOCIDAD_MAXIMA);
 	analogWrite(PIN_PWM_MOTOR_2, 0);
 }
 
-void seguirRecto(){
+void avanzar(){
 	// Ambos giran lo mismo
 	analogWrite(PIN_PWM_MOTOR_1, VELOCIDAD_MAXIMA);
 	analogWrite(PIN_PWM_MOTOR_2, VELOCIDAD_MAXIMA);
@@ -188,7 +201,7 @@ void setup(){
 	...
 
 	// Configuramos la velocidad
-	girarIzquierda();
+	girarIzquierdaLeve();
 }
           </code></pre>
 					<p>
@@ -225,19 +238,32 @@ void setup(){
 
 #define VELOCIDAD_MAXIMA 255
 
-void girarIzquierda(){
+// funciones de movimiento
+void girarIzquierdaLeve(){
 	// Giramos mas el motor derecho que el izquierdo (M2 = derecho)
+	analogWrite(PIN_PWM_MOTOR_1, VELOCIDAD_MAXIMA / 2);
+	analogWrite(PIN_PWM_MOTOR_2, VELOCIDAD_MAXIMA);
+}
+
+void girarIzquierdaFuerte(){
+	// Giramos el motor derecho
 	analogWrite(PIN_PWM_MOTOR_1, 0);
 	analogWrite(PIN_PWM_MOTOR_2, VELOCIDAD_MAXIMA);
 }
 
-void girarDerecha(){
+void girarDerechaLeve(){
 	// Giramos mas el motor izquierdo que el derecho (M1 = izquierdo)
+	analogWrite(PIN_PWM_MOTOR_1, VELOCIDAD_MAXIMA);
+	analogWrite(PIN_PWM_MOTOR_2, VELOCIDAD_MAXIMA / 2);
+}
+
+void girarDerechaFuerte(){
+	// Giramos el motor izquierdo
 	analogWrite(PIN_PWM_MOTOR_1, VELOCIDAD_MAXIMA);
 	analogWrite(PIN_PWM_MOTOR_2, 0);
 }
 
-void seguirRecto(){
+void avanzar(){
 	// Ambos giran lo mismo
 	analogWrite(PIN_PWM_MOTOR_1, VELOCIDAD_MAXIMA);
 	analogWrite(PIN_PWM_MOTOR_2, VELOCIDAD_MAXIMA);
@@ -273,7 +299,7 @@ void setup(){
 	digitalWrite(PIN_MOTOR_2B, LOW);
 
 	// Configuramos la velocidad
-	girarIzquierda();
+	girarIzquierdaLeve();
 }
 
 void loop(){

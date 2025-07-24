@@ -46,14 +46,15 @@
           <iframe
             width="560"
             height="315"
-            src="https://www.youtube.com/embed/-2xuO8JBepM?si=U5q6cJ6y37M42hEq"
+            src="https://www.youtube.com/embed/NZt_MXZc_aQ?si=pbL1GloKRCJ1Sz2D"
             title="YouTube video player"
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             referrerpolicy="strict-origin-when-cross-origin"
             allowfullscreen
           ></iframe>
-          <div>placeholder</div>
+          <div>
+            En este video tutorial se enseña como hacer el algoritmo básico de seguimiento para nuestro seguidor de linea. Extraido del canal de youtube "vadechips" (@vadechips)</div>
         </div>
       </section>
 
@@ -140,7 +141,9 @@ void loop(){
             <p>
               Este conjunto de instrucciones forma el primer algoritmo funcional de seguimiento de línea. Es una solución simple, pero efectiva para trayectos lineales o con curvas suaves.
             </p>
-
+            <p>
+                Llegados a este punto, el seguidor de lineas es capaz de seguir lineas, aunque de una forma bruta que requiere disminuir la velocidad para evitar salirse. Esto lo solucionaremos en la siguiente clase.
+            </p>
           </div>
         </div>
       </section>
@@ -239,11 +242,11 @@ void setup(){
 
 void loop(){
 	// Lectura de sensores
-	bool sensor_1 = digitalRead(PIN_SENSOR_1);
+	bool sensor_1 = digitalRead(PIN_SENSOR_1); // Sensor mas izquierdo
 	bool sensor_2 = digitalRead(PIN_SENSOR_2);
-	bool sensor_3 = digitalRead(PIN_SENSOR_3);
+	bool sensor_3 = digitalRead(PIN_SENSOR_3); // Sensor central
 	bool sensor_4 = digitalRead(PIN_SENSOR_4);
-	bool sensor_5 = digitalRead(PIN_SENSOR_5);
+	bool sensor_5 = digitalRead(PIN_SENSOR_5); // Sensor mas derecho
 
 	// Escritura en el puerto serie
 	Serial.print(sensor_1);

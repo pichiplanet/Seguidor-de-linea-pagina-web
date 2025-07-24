@@ -2,7 +2,7 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Clase 6: Mejora del control – Proporcional (PID opcional)</title>
     <link rel="icon" type="image/png" href="assets/logo/white.png" />
     <link rel="stylesheet" href="style.css" />
@@ -66,14 +66,17 @@
               El control proporcional se basa en la idea de corregir el error en función de la desviación actual del robot respecto a la línea. Cuanto mayor sea el error (la desviación de la línea), mayor será la corrección aplicada.
             </p>
             <p>
-              Definimos un factor de ganancia <code>Kp</code> que multiplicará la diferencia entre el sensor central (o promedio) y el valor ideal (la línea). Este valor se utiliza para ajustar la velocidad de los motores.
+              Definimos un factor de ganancia <code>Kp</code> que multiplicará la diferencia entre el sensor o promedio) y el valor ideal (la línea). Este valor se utiliza para ajustar la velocidad de los motores.
             </p>
             <p>
-              La fórmula para el control proporcional es:
+              
+            </p>
+            <p>
+              La fórmula para el control proporcional con 5 sensores es:
             </p>
             <ul>
-              <li><code>error = sensor_central - valor_ideal</code></li>
-              <li><code>corrección = Kp * error</code></li>
+              <li><code>error = -2*sensor 1 - sensor_2 + sensor_4 + 2*sensor_5</code></li>
+              <li><code>correccion = Kp * error</code></li>
             </ul>
             <p>
               La corrección se aplica a las velocidades de los motores para ajustar la dirección del robot.
@@ -83,7 +86,7 @@
       </section>
 
       <section class="class-card">
-        <h2 class="title">Código ejemplo</h2>
+        <h2 class="title">Implementación</h2>
         <div class="content">
           <div style="width: 100%">
 
@@ -91,37 +94,50 @@
               Primero, definimos la constante de ganancia <code>Kp</code> y calculamos el error en cada iteración del ciclo <code>loop()</code>. Luego, ajustamos la velocidad de los motores de acuerdo con el valor del error.
             </p>
             <pre class="codeblock"><code>
-// Definición de la constante Kp
-#define Kp 1.0
+...
 
-// Lectura de los sensores (como en el ejemplo anterior)
-bool s1 = digitalRead(PIN_SENSOR_1);
-bool s2 = digitalRead(PIN_SENSOR_2);
-bool s3 = digitalRead(PIN_SENSOR_3);  // Sensor central
-bool s4 = digitalRead(PIN_SENSOR_4);
-bool s5 = digitalRead(PIN_SENSOR_5);
+float Kp = 1.0;   // Constante de proporcionalidad
+float error = 0;
+int correccion = 0;  // Correccion a aplicar a los motores
 
-// Calcular el error (desviación de la línea)
-int error = s3 - 0;  // Queremos que el sensor central vea la línea (valor 0)
-int correccion = Kp * error;
+...
 
-// Control proporcional
 void loop() {
-  if (error == 0) {
-    avanzar();
-  } else {
-    // Ajustar la corrección basada en el error
-    int velocidad_motor1 = 255 - correccion;
-    int velocidad_motor2 = 255 + correccion;
-    
-    analogWrite(PIN_PWM_MOTOR_1, velocidad_motor1);
-    analogWrite(PIN_PWM_MOTOR_2, velocidad_motor2);
-  }
+	// Lectura de sensores
+	bool sensor_1 = digitalRead(PIN_SENSOR_1); // Sensor mas izquierdo
+	bool sensor_2 = digitalRead(PIN_SENSOR_2);
+	bool sensor_3 = digitalRead(PIN_SENSOR_3); // Sensor central
+	bool sensor_4 = digitalRead(PIN_SENSOR_4);
+	bool sensor_5 = digitalRead(PIN_SENSOR_5); // Sensor mas derecho
+
+	// Calculo del error basado en los sensores
+	// Asignamos valores ponderados a cada sensor
+	error = -2*sensor_1 - sensor_2 + sensor_4 + 2*sensor_5;
+
+	// Calculo de la correccion proporcional
+	correccion = Kp * error;
+
+	// Limitar la correccion para evitar valores extremos
+	if (correccion > VELOCIDAD_MAXIMA) {correccion = VELOCIDAD_MAXIMA};
+	if (correccion < -VELOCIDAD_MAXIMA) {correccion = -VELOCIDAD_MAXIMA};
+
+	// Aplicar la correccion a los motores
+	if (error == 0) {
+		// Si el error es cero, el robot sigue recto
+		analogWrite(PIN_PWM_MOTOR_1, VELOCIDAD_MAXIMA);
+		analogWrite(PIN_PWM_MOTOR_2, VELOCIDAD_MAXIMA);
+	} else {
+		int velocidad_motor1 = VELOCIDAD_MAXIMA - correccion;
+		int velocidad_motor2 = VELOCIDAD_MAXIMA + correccion;
+
+		analogWrite(PIN_PWM_MOTOR_1, velocidad_motor1);
+		analogWrite(PIN_PWM_MOTOR_2, velocidad_motor2);
+	}
 }
             </code></pre>
 
             <p>
-              En este código, el valor de <code>error</code> es la diferencia entre el sensor central y el valor ideal (0). Dependiendo de ese error, ajustamos las velocidades de los motores. El valor de <code>Kp</code> controla la "fuerza" de la corrección.
+              En este código, el valor de <code>error</code> es la desviación de la línea. Dependiendo de ese error, ajustamos las velocidades de los motores. El valor de <code>Kp</code> controla la "fuerza" de la corrección.
             </p>
 
           </div>
@@ -144,8 +160,111 @@ void loop() {
               Este enfoque es más preciso, ya que considera no solo el error actual, sino también su historial y la tendencia futura. Sin embargo, su implementación es más compleja y, por lo tanto, lo dejaremos como un tema opcional.
             </p>
             <p>
-              Para implementarlo, se agregarían tres variables: <code>integral</code>, <code>derivativo</code> y <code>prev_error</code>.
+              Para implementarlo, se agregarían tres variables: <code>integral</code>, <code>derivativo</code> y <code>error_previo</code>.
+							También sería necesario establecer las nuevas constantes <code>Ki</code> y <code>Kd</code>.
             </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="class-card">
+        <h2 class="title">Código completo de esta clase</h2>
+        <div class="content">
+          <div style="width: 100%">
+            <pre class="codeblock"><code>
+// CODIGO DE TUTORIAL SEGUIDOR DE LINEA PARA LA EETP 460: CLASE 6
+
+// Definicion de pines
+// Sensores
+#define PIN_SENSOR_1 14
+#define PIN_SENSOR_2 15
+#define PIN_SENSOR_3 16
+#define PIN_SENSOR_4 17
+#define PIN_SENSOR_5 18
+
+// Motores
+// Dirección de la corriente
+#define PIN_MOTOR_1A 12
+#define PIN_MOTOR_1B 11
+#define PIN_MOTOR_2A 10
+#define PIN_MOTOR_2B 9
+
+// Velocidad
+#define PIN_PWM_MOTOR_1 6
+#define PIN_PWM_MOTOR_2 5
+
+#define VELOCIDAD_MAXIMA 255
+
+float Kp = 1.0;   // Constante de proporcionalidad
+float error = 0;
+int correccion = 0;  // Correccion a aplicar a los motores
+
+void setup(){
+	// Sensores (entrada)
+	pinMode(PIN_SENSOR_1, INPUT);
+	pinMode(PIN_SENSOR_2, INPUT);
+	pinMode(PIN_SENSOR_3, INPUT);
+	pinMode(PIN_SENSOR_4, INPUT);
+	pinMode(PIN_SENSOR_5, INPUT);
+
+	// Motores (salida)
+	pinMode(PIN_MOTOR_1A, OUTPUT);
+	pinMode(PIN_MOTOR_1B, OUTPUT);
+	pinMode(PIN_MOTOR_2A, OUTPUT);
+	pinMode(PIN_MOTOR_2B, OUTPUT);
+
+	// Velocidad de los motores
+	pinMode(PIN_PWM_MOTOR_1 OUTPUT);
+	pinMode(PIN_PWM_MOTOR_2, OUTPUT);
+
+	// Preparamos el puerto serie para una velocidad que podamos leer
+	Serial.begin(115200);
+
+	// Hacemos girar el motor 1
+	digitalWrite(PIN_MOTOR_1A, HIGH);
+	digitalWrite(PIN_MOTOR_1B, LOW);
+
+	// Hacemos lo mismo con el motor 2
+	digitalWrite(PIN_MOTOR_2A, HIGH);
+	digitalWrite(PIN_MOTOR_2B, LOW);
+
+	// Configuramos la velocidad
+	girarIzquierdaLeve();
+}
+
+void loop() {
+	// Lectura de sensores
+	bool sensor_1 = digitalRead(PIN_SENSOR_1); // Sensor mas izquierdo
+	bool sensor_2 = digitalRead(PIN_SENSOR_2);
+	bool sensor_3 = digitalRead(PIN_SENSOR_3); // Sensor central
+	bool sensor_4 = digitalRead(PIN_SENSOR_4);
+	bool sensor_5 = digitalRead(PIN_SENSOR_5); // Sensor mas derecho
+
+	// Calculo del error basado en los sensores
+	// Asignamos valores ponderados a cada sensor
+	error = -2*sensor_1 - sensor_2 + sensor_4 + 2*sensor_5;
+
+	// Calculo de la correccion proporcional
+	correccion = Kp * error;
+
+	// Limitar la correccion para evitar valores extremos
+	if (correccion > VELOCIDAD_MAXIMA) {correccion = VELOCIDAD_MAXIMA};
+	if (correccion < -VELOCIDAD_MAXIMA) {correccion = -VELOCIDAD_MAXIMA};
+
+	// Aplicar la correccion a los motores
+	if (error == 0) {
+		// Si el error es cero, el robot sigue recto
+		analogWrite(PIN_PWM_MOTOR_1, VELOCIDAD_MAXIMA);
+		analogWrite(PIN_PWM_MOTOR_2, VELOCIDAD_MAXIMA);
+	} else {
+		int velocidad_motor1 = VELOCIDAD_MAXIMA - correccion;
+		int velocidad_motor2 = VELOCIDAD_MAXIMA + correccion;
+
+		analogWrite(PIN_PWM_MOTOR_1, velocidad_motor1);
+		analogWrite(PIN_PWM_MOTOR_2, velocidad_motor2);
+	}
+}
+          </code></pre>
           </div>
         </div>
       </section>
@@ -176,3 +295,4 @@ void loop() {
     </footer>
   </body>
 </html>
+

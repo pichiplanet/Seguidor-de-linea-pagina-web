@@ -40,6 +40,7 @@ a:hover {
 nav {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   background: var(--secondary-bg);
   padding: 10px;
   position: sticky;

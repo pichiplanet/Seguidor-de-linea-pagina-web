@@ -4,15 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Clase 5: Algoritmo básico de seguimiento</title>
-    <link rel="icon" type="image/png" href="assets/logo/white.png" />
+    <link rel="icon" type="image/png" href="assets/logo/escuela.png" />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <nav>
-      <a href="index.html" class="btn">
-        <img src="assets/logo/white.png" width="50" />
+      <a href="https://www.eet460rafaela.edu.ar/" class="btn">
+        <img src="assets/logo/escuela.png" height="50" />
       </a>
       <div class="class-nav" style="display: inline-block">
+        <a href="index.html" class="btn">Inicio</a>
         <a href="class1.html" class="btn">Clase 1</a>
         <a href="class2.html" class="btn">Clase 2</a>
         <a href="class3.html" class="btn">Clase 3</a>
@@ -21,7 +22,15 @@
         <a href="class6.html" class="btn">Clase 6</a>
         <a href="class7.html" class="btn">Clase 7</a>
       </div>
+      <div>
+        <a href="https://lnr-argentina.com.ar/" class="btn">
+          <img src="assets/logo/lnr.png" height="50" />
+        <a href="https://grsbahiablanca.com.ar/?utm_source=email_marketing&utm_admin=170385&utm_medium=email&utm_campaign=Ya_llega_la_XXI_Competencia_Internacional_de_Robtica_a_Baha_Blanca" class="btn">
+          <img src="assets/logo/grs.png" height="50" />
+        </a>  
+      </div>
     </nav>
+
 
     <header>
       <img class="header-bg" src="assets/bg/escuela.jpg" />
@@ -35,7 +44,9 @@
         <div class="content">
           <img class="class-img" src="assets/cards/clase5.jpg" />
           <div>
+            <p>
             Implementar un algoritmo simple de control basado en los valores de los sensores para que el robot pueda seguir una línea negra sobre fondo blanco.
+            </p>
           </div>
         </div>
       </section>
@@ -242,11 +253,11 @@ void setup(){
 
 void loop(){
 	// Lectura de sensores
-	bool sensor_1 = digitalRead(PIN_SENSOR_1); // Sensor mas izquierdo
+	bool sensor_1 = digitalRead(PIN_SENSOR_1);
 	bool sensor_2 = digitalRead(PIN_SENSOR_2);
-	bool sensor_3 = digitalRead(PIN_SENSOR_3); // Sensor central
+	bool sensor_3 = digitalRead(PIN_SENSOR_3);
 	bool sensor_4 = digitalRead(PIN_SENSOR_4);
-	bool sensor_5 = digitalRead(PIN_SENSOR_5); // Sensor mas derecho
+	bool sensor_5 = digitalRead(PIN_SENSOR_5);
 
 	// Escritura en el puerto serie
 	Serial.print(sensor_1);

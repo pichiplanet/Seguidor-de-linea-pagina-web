@@ -4,15 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Clase 7: Pista de pruebas y desafío</title>
-    <link rel="icon" type="image/png" href="assets/logo/white.png" />
+    <link rel="icon" type="image/png" href="assets/logo/escuela.png" />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <nav>
-      <a href="index.html" class="btn">
-        <img src="assets/logo/white.png" width="50" />
+      <a href="https://www.eet460rafaela.edu.ar/" class="btn">
+        <img src="assets/logo/escuela.png" height="50" />
       </a>
       <div class="class-nav" style="display: inline-block">
+        <a href="index.html" class="btn">Inicio</a>
         <a href="class1.html" class="btn">Clase 1</a>
         <a href="class2.html" class="btn">Clase 2</a>
         <a href="class3.html" class="btn">Clase 3</a>
@@ -20,6 +21,13 @@
         <a href="class5.html" class="btn">Clase 5</a>
         <a href="class6.html" class="btn">Clase 6</a>
         <a href="class7.html" class="btn active">Clase 7</a>
+      </div>
+      <div>
+        <a href="https://lnr-argentina.com.ar/" class="btn">
+          <img src="assets/logo/lnr.png" height="50" />
+        <a href="https://grsbahiablanca.com.ar/?utm_source=email_marketing&utm_admin=170385&utm_medium=email&utm_campaign=Ya_llega_la_XXI_Competencia_Internacional_de_Robtica_a_Baha_Blanca" class="btn">
+          <img src="assets/logo/grs.png" height="50" />
+        </a>  
       </div>
     </nav>
 
@@ -33,258 +41,66 @@
       <section class="class-card">
         <h2 class="title">Objetivo de la clase</h2>
         <div class="content">
-          <img class="class-img" src="assets/cards/clase5.jpg" />
+          <img class="class-img" src="assets/cards/clase7.jpg" />
           <div>
             <p>
-                Diseñar una pista en la que probar el seguidor de líneas
+              Crear una pista apropiada para probar el seguidor de líneas y detallar un modelo de ejemplo en base al reglamento de competición de la Liga Nacional de Robótica.
             </p>
           </div>
         </div>
       </section>
 
       <section class="class-card">
-        <h2 class="title">Video tutorial</h2>
+        <h2 class="title">Cómo hacer la pista</h2>
         <div class="content">
-          <iframe
-            width="560"
-            height="315"
-            src="https://www.youtube.com/embed/-2xuO8JBepM?si=U5q6cJ6y37M42hEq"
-            title="YouTube video player"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerpolicy="strict-origin-when-cross-origin"
-            allowfullscreen
-          ></iframe>
-          <div>placeholder</div>
-        </div>
-      </section>
-
-      <section class="class-card">
-        <h2 class="title">Algoritmo de decisión</h2>
-        <div class="content">
-          <div style="width: 100%">
-            <p>
-              Usaremos los valores de los sensores para tomar decisiones sobre hacia qué dirección girar. Por ejemplo:
-            </p>
-            <ul>
-              <li><strong>00100:</strong> centrado en la línea → avanzar recto</li>
-              <li><strong>00010:</strong> ligeramente a la derecha → girar a la derecha</li>
-              <li><strong>00001:</strong> completamente a la derecha → giro fuerte a la derecha</li>
-              <li><strong>01000:</strong> ligeramente a la izquierda → girar a la izquierda</li>
-              <li><strong>10000:</strong> completamente a la izquierda → giro fuerte a la izquierda</li>
-              <li><strong>00000:</strong> línea perdida o entre medio de los sensores → avanzar recto</li>
-            </ul>
-            <p>Esto se implementa en el loop utilizando condicionales.</p>
-          </div>
-        </div>
-      </section>
-
-      <section class="class-card">
-        <h2 class="title">Implementación</h2>
-        <div class="content">
-          <div style="width: 100%">
-
-            <p>
-              Primero leemos el estado de los sensores conectados a los pines digitales. Recordemos que el sensor devolverá <code>0</code> si ve negro (línea) y <code>1</code> si ve blanco (fondo). (Esto ya lo hicimos en una clase anterior)
-            </p>
-            <pre class="codeblock"><code>
-...
-
-void loop(){
-	// Lectura de sensores
-	bool sensor_1 = digitalRead(PIN_SENSOR_1); // Sensor mas izquierdo
-	bool sensor_2 = digitalRead(PIN_SENSOR_2);
-	bool sensor_3 = digitalRead(PIN_SENSOR_3); // Sensor central
-	bool sensor_4 = digitalRead(PIN_SENSOR_4);
-	bool sensor_5 = digitalRead(PIN_SENSOR_5); // Sensor mas derecho
-
-	...
-}
-            </code></pre>
-
-            <p>
-              Luego usamos una estructura condicional para decidir qué acción tomar dependiendo de qué sensor detecta la línea. La prioridad está dada por qué sensor esté más cerca del centro:
-            </p>
-            <ul>
-              <li><code>sensor_3</code>: línea centrada → avanzar</li>
-              <li><code>sensor_2</code>: línea un poco a la izquierda → giro leve a la izquierda</li>
-              <li><code>sensor_1</code>: línea muy a la izquierda → giro fuerte a la izquierda</li>
-              <li><code>sensor_4</code>: línea un poco a la derecha → giro leve a la derecha</li>
-              <li><code>sensor_5</code>: línea muy a la derecha → giro fuerte a la derecha</li>
-              <li>Ningún sensor detecta línea → avanzar</li>
-            </ul>
-
-						<p>
-							La razón por la que hacemos que el robot avance cuando no detecta línea es porque hay casos en los que la linea se encuentra entre medio de dos sensores y ninguno de estos lo detecta.
-						</p>
-
-            <pre class="codeblock"><code>
-void loop(){
-	...
-
-	// Algoritmo de seguimiento de linea
-	if (sensor_3 == 0) {
-		avanzar(); // Sensor central detecta linea
-	} else if (sensor_2 == 0) {
-		girarIzquierdaLeve();
-	} else if (sensor_1 == 0) {
-		girarIzquierdaFuerte();
-	} else if (sensor_4 == 0) {
-		girarDerechaLeve();
-	} else if (sensor_5 == 0) {
-		girarDerechaFuerte();
-	} else {
-		avanzar();  // Ningún sensor detecta la línea
-	}
-}
-            </code></pre>
-
-            <p>
-              Este conjunto de instrucciones forma el primer algoritmo funcional de seguimiento de línea. Es una solución simple, pero efectiva para trayectos lineales o con curvas suaves.
-            </p>
-            <p>
-                Llegados a este punto, el seguidor de lineas es capaz de seguir lineas, aunque de una forma bruta que requiere disminuir la velocidad para evitar salirse. Esto lo solucionaremos en la siguiente clase.
-            </p>
-          </div>
-        </div>
-      </section>
-
-			<section class="class-card">
-        <h2 class="title">Código completo de esta clase</h2>
-        <div class="content">
-          <div style="width: 100%">
-            <pre class="codeblock"><code>
-// CODIGO DE TUTORIAL SEGUIDOR DE LINEA PARA LA EETP 460: CLASE 5
-
-// Definicion de pines
-// Sensores
-#define PIN_SENSOR_1 14
-#define PIN_SENSOR_2 15
-#define PIN_SENSOR_3 16
-#define PIN_SENSOR_4 17
-#define PIN_SENSOR_5 18
-
-// Motores
-// Dirección de la corriente
-#define PIN_MOTOR_1A 12
-#define PIN_MOTOR_1B 11
-#define PIN_MOTOR_2A 10
-#define PIN_MOTOR_2B 9
-
-// Velocidad
-#define PIN_PWM_MOTOR_1 6
-#define PIN_PWM_MOTOR_2 5
-
-#define VELOCIDAD_MAXIMA 255
-
-// funciones de movimiento
-void girarIzquierdaLeve(){
-	// Giramos mas el motor derecho que el izquierdo (M2 = derecho)
-	analogWrite(PIN_PWM_MOTOR_1, VELOCIDAD_MAXIMA / 2);
-	analogWrite(PIN_PWM_MOTOR_2, VELOCIDAD_MAXIMA);
-}
-
-void girarIzquierdaFuerte(){
-	// Giramos el motor derecho
-	analogWrite(PIN_PWM_MOTOR_1, 0);
-	analogWrite(PIN_PWM_MOTOR_2, VELOCIDAD_MAXIMA);
-}
-
-void girarDerechaLeve(){
-	// Giramos mas el motor izquierdo que el derecho (M1 = izquierdo)
-	analogWrite(PIN_PWM_MOTOR_1, VELOCIDAD_MAXIMA);
-	analogWrite(PIN_PWM_MOTOR_2, VELOCIDAD_MAXIMA / 2);
-}
-
-void girarDerechaFuerte(){
-	// Giramos el motor izquierdo
-	analogWrite(PIN_PWM_MOTOR_1, VELOCIDAD_MAXIMA);
-	analogWrite(PIN_PWM_MOTOR_2, 0);
-}
-
-void avanzar(){
-	// Ambos giran lo mismo
-	analogWrite(PIN_PWM_MOTOR_1, VELOCIDAD_MAXIMA);
-	analogWrite(PIN_PWM_MOTOR_2, VELOCIDAD_MAXIMA);
-}
-
-void setup(){
-	// Sensores (entrada)
-	pinMode(PIN_SENSOR_1, INPUT);
-	pinMode(PIN_SENSOR_2, INPUT);
-	pinMode(PIN_SENSOR_3, INPUT);
-	pinMode(PIN_SENSOR_4, INPUT);
-	pinMode(PIN_SENSOR_5, INPUT);
-
-	// Motores (salida)
-	pinMode(PIN_MOTOR_1A, OUTPUT);
-	pinMode(PIN_MOTOR_1B, OUTPUT);
-	pinMode(PIN_MOTOR_2A, OUTPUT);
-	pinMode(PIN_MOTOR_2B, OUTPUT);
-
-	// Velocidad de los motores
-	pinMode(PIN_PWM_MOTOR_1 OUTPUT);
-	pinMode(PIN_PWM_MOTOR_2, OUTPUT);
-
-	// Preparamos el puerto serie para una velocidad que podamos leer
-	Serial.begin(115200);
-
-	// Hacemos girar el motor 1
-	digitalWrite(PIN_MOTOR_1A, HIGH);
-	digitalWrite(PIN_MOTOR_1B, LOW);
-
-	// Hacemos lo mismo con el motor 2
-	digitalWrite(PIN_MOTOR_2A, HIGH);
-	digitalWrite(PIN_MOTOR_2B, LOW);
-
-	// Configuramos la velocidad
-	girarIzquierdaLeve();
-}
-
-void loop(){
-	// Lectura de sensores
-	bool sensor_1 = digitalRead(PIN_SENSOR_1);
-	bool sensor_2 = digitalRead(PIN_SENSOR_2);
-	bool sensor_3 = digitalRead(PIN_SENSOR_3);
-	bool sensor_4 = digitalRead(PIN_SENSOR_4);
-	bool sensor_5 = digitalRead(PIN_SENSOR_5);
-
-	// Escritura en el puerto serie
-	Serial.print(sensor_1);
-	Serial.print(sensor_2);
-	Serial.print(sensor_3);
-	Serial.print(sensor_4);
-	Serial.println(sensor_5);
-
-	// Algoritmo de seguimiento de linea
-	if (sensor_3 == 0) {
-		avanzar(); // Sensor central detecta linea
-	} else if (sensor_2 == 0) {
-		girarIzquierdaLeve();
-	} else if (sensor_1 == 0) {
-		girarIzquierdaFuerte();
-	} else if (sensor_4 == 0) {
-		girarDerechaLeve();
-	} else if (sensor_5 == 0) {
-		girarDerechaFuerte();
-	} else {
-		avanzar();  // Ningún sensor detecta la línea
-	}
-}
-          </code></pre>
-          </div>
-        </div>
-      </section>
-
-      <section class="class-card">
-        <h2 class="title">Próximos pasos</h2>
-        <div class="content">
-          <img class="class-img" src="assets/cards/getout.avif" />
+          <img class="class-img" src="assets/cards/pintar.png"/>
           <div>
             <p>
-              En la siguiente clase analizaremos cómo ajustar la sensibilidad del robot y qué mejoras se pueden hacer al algoritmo para curvas.
+              Para que el robot pueda detectar la línea y seguirla correctamente es necesario tener en cuenta lo siguiente:
             </p>
-            <a class="link" href="class6.html">Ir a la clase 6 &rarr;</a>
+            <ul>
+              <li>La línea puede ser blanca sobre un fondo negro o al revés</li>
+              <li>En caso de cambiar de una pista blanca a una pista negra, deberá invertirse la lógica de los sensores</li>
+              <li>Los colores de la pista deben ser en acabado mate, es decir, no deben reflejar la luz</li>
+              <li>Suele hacerse con madera pintada</li>
+              
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="class-card">
+        <h2 class="title">Especificaciones técnicas de una pista de competición</h2>
+        <div class="content">
+          <img class="class-img" src="assets/cards/pista.png" />
+          <div>
+            <p>
+              En base al <a href="https://lnr-argentina.com.ar/reglamentos/Reglamento%20Carrera.pdf">Reglamento de carrera de la Liga nacional de robótica</a> la pista debería contar con las siguientes características:
+            </p>
+            <ul>
+              <li>El área de Competencia consta de un circuito de dos líneas de 2cm (±0,3cm) de ancho sobre un fondo que contraste, con una separación mínima una de otra de 18cm.
+              <li>Las líneas conforman un circuito cerrado.</li>
+              <li>El ancho del circuito será de 40cm (+/-0,5cm), asegurando una distancia entre robots de 6cm.</li>
+              <li>El circuito tendrá una elevación con respecto al nivel del suelo en todo su recorrido.</li>
+              <li>El circuito contará con curvas de un radio de curvatura mínimo de 30cm, con una tolerancia del ±10%, tomadas del centro de la curva y todas tendrán un ángulo de peralte nulo.</li>
+              <li>La superficie del circuito podrá contar con irregularidades, las mismas en caso de ser elevaciones tendrán una pendiente máxima de 20 grados. </li>
+              <li>Habrá como mínimo 1 metro alrededor del circuito, el que seguirá vacío de cualquier obstáculo durante la competencia.</li>
+              <li>Queda a criterio del organizador, el color del circuito, pudiendo optar por una pista negra con líneas blancas, o pista blanca con líneas negras.</li>
+              <li>Ningún circuito podrá contar con marcas de avisos de curvas</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="class-card">
+        <h2 class="title">Desafío</h2>
+        <div class="content">
+          <img class="full-size" src="assets/cards/clase1.jpg" />
+          <div>
+            <p>
+              Los invitamos a participar en la Competición de Robótica Argentina 2025. Más información en la <a href="">página oficial de la liga nacional de robótica.</a>
+            </p>
+            <a class="link" href="index.html">Inscribirse&rarr;</a> <!-- REEMPLAZAR LINK POR FORMULARIO DE GOOGLE-->
           </div>
         </div>
       </section>

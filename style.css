@@ -239,6 +239,14 @@ pre {
   line-height: 0;
 }
 
+.associations {
+  display: flex;
+  justify-content: center !important;
+}
+.associations * {
+  margin: 10px;
+}
+
 footer {
   background-color: #1e1e2f;
   color: white;
